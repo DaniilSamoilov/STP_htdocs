@@ -7,10 +7,11 @@ $passwd = filter_var(trim($_POST['passwd']), FILTER_SANITIZE_STRING);
 
 $sql = "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$passwd'";
 
-if($check_user = $mysql->query($sql))
+$check_user = $mysql->query($sql);
+if($check_user->fetch_row())
 {
+    $_SESSION['login'] = true;
     foreach($check_user as $row){
-        $_SESSION['login'] = true;
         $_SESSION['user'] = [
             "id"=>$row['id'],
             "nick_name" => $row['nick_name'],
@@ -24,7 +25,7 @@ if($check_user = $mysql->query($sql))
 }
 else
 {
-    $_SESSION['message'] = "Неверный пароль либо данной учётной забиси не сущетсвует";
+    $_SESSION['message'] = "Неверный пароль либо данной учётной записи не сущетсвует";
     header('Location: ../');
     exit();
 }
