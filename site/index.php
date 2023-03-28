@@ -2,6 +2,7 @@
 session_start();
 require_once("./scripts/connect_to_db.php")
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
