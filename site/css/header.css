@@ -1,0 +1,38 @@
+.navbar{
+    background-color: #010e7e;
+}
+
+.navbar-brand{
+    color: white;
+}
+
+.navbar-brand:hover{
+    color: aqua;
+}
+
+.nav-link{
+    color: lightblue;
+}
+
+.nav-link:hover{
+    color: white;
+    background-color: #0216cc;
+}
+
+.btn{
+    color: black;
+    background-color: white;
+}
+
+.btn:hover{
+    color: white;
+    background-color: #0216cc;
+}
+
+.navbar-toggler{
+    background-color: white;
+}
+
+.navbar-toggler:hover{
+    background-color: gainsboro;
+}
