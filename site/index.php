@@ -58,7 +58,7 @@ require_once("./scripts/connect_to_db.php")
         <?php
         $sql = "SELECT * FROM `chapters`";
         $chapters = $mysql->query($sql);
-        if (!$chapters->num_rows > 0) {
+        if (!$chapters = $mysql->query($sql)) {
             echo "Скорее всего ведется техническое обслуживание сайта, темы пока не доступны";
         } else {
             foreach ($chapters as $chapter) {
