@@ -10,11 +10,7 @@ $sql = "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$passwd
 $check_user = $mysql->query($sql);
 if ($user = $check_user->fetch_assoc()) {
     $_SESSION['user'] = [
-        "id" => $user['id'],
-        "nick_name" => $user['nick_name'],
-        "avatar" => $user['avatar'],
-        "email" => $user['email'],
-        "score" => $user['score'],
+        "id" => $user['id']
     ];
     header('Location: /');
     exit();

@@ -4,6 +4,10 @@ if (!isset($_SESSION['user'])) {
   header('Location: /authorization');
   exit();
 }
+require_once("../scripts/get_user_info.php");
+require_once("../scripts/connect_to_db.php");
+
+$user = get_user_by_id($mysql,  $_SESSION['user']['id']);
 ?>
 
 <!DOCTYPE HTML>
@@ -17,13 +21,13 @@ if (!isset($_SESSION['user'])) {
 <body align="center">
   <h2>Профиль<h2>
 
-      <h2><?= $_SESSION['user']['nick_name'] ?></h2>
+      <h2><?= $user['nick_name'] ?></h2>
       <button onclick="window.location.href = '/authorization/change_nick_name.php';">Смена ника</button>
 
-      <img src="<?= $_SESSION['user']['avatar'] ?>" width="100" alt="">
-      <h2><?= $_SESSION['user']['score'] ?></h2>
+      <img src="<?= $user['avatar'] ?>" width="100" alt="">
+      <h2>Репутация: <?= $user['score'] ?></h2>
 
-      <h2><?= $_SESSION['user']['email'] ?>(В разработке)</h2><!--Почта врятли когда-либо будет реализована-->
+      <h2>Почта: <?= $user['email'] ?>(В разработке)</h2><!--Почта врятли когда-либо будет реализована-->
 
 
       <?php
