@@ -17,25 +17,45 @@
                 <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Найти</button>
             </form>
-            Сортировать по:
             <form class="d-flex search-filter-container">
                 <ul>
+                    <li>Искать:</li>
                     <li>
-                        <input name="filter1" type="radio" id="popularity" value="popularity" checked>
-                        <label for="popularity">Популярности</label>
+                        <input name="filter1" type="radio" id="relevance" value="relevance" checked>
+                        <label for="relevance">Везде</label>
+                    </li>
+                    <li>
+                        <input name="filter1" type="radio" id="popularity" value="popularity">
+                        <label for="popularity">Только в заголовках тем</label>
                     </li>
                     <li>
                         <input name="filter1" type="radio" id="creation-date" value="creation-date">
+                        <label for="creation-date">Только в сообщениях</label>
+                    </li>
+                </ul>
+                <ul>
+                    <li>Сортировать по:</li>
+                    <li>
+                        <input name="filter2" type="radio" id="relevance" value="relevance" checked>
+                        <label for="relevance">Релевантности</label>
+                    </li>
+                    <li>
+                        <input name="filter2" type="radio" id="popularity" value="popularity">
+                        <label for="popularity">Популярности</label>
+                    </li>
+                    <li>
+                        <input name="filter2" type="radio" id="creation-date" value="creation-date">
                         <label for="creation-date">Дате создания темы</label>
                     </li>
                 </ul>
                 <ul>
+                    <br>
                     <li>
-                        <input name="filter2" type="radio" id="descending" value="descending" checked>
+                        <input name="filter3" type="radio" id="descending" value="descending" checked>
                         <label for="descending">По убыванию</label>
                     </li>
                     <li>
-                        <input name="filter2" type="radio" id="ascending" value="ascending">
+                        <input name="filter3" type="radio" id="ascending" value="ascending">
                         <label for="ascending">По возростанию</label>
                     </li>
                 </ul>
