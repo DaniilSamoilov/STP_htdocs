@@ -19,18 +19,14 @@
             </form>
             <form class="d-flex search-filter-container">
                 <ul>
-                    <li>Искать:</li>
+                    <li>Категория:</li>
                     <li>
-                        <input name="filter1" type="radio" id="anywhere" value="anywhere" checked>
-                        <label for="anywhere">Везде</label>
-                    </li>
-                    <li>
-                        <input name="filter1" type="radio" id="only-head" value="only-head">
-                        <label for="only-head">Только в заголовках тем</label>
-                    </li>
-                    <li>
-                        <input name="filter1" type="radio" id="only-messages" value="only-messages">
-                        <label for="only-messages">Только в сообщениях</label>
+                        <select id="category" name="category">
+                            <option value="">Выберите категорию</option>
+                            <option value="general">Общие вопросы</option>
+                            <option value="dormitorys">Общежития</option>
+                            <option value="events">Мероприятия</option>
+                         </select>
                     </li>
                 </ul>
                 <ul>
