@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Студенческий форум КФУ «Точка общения»</title>
+    <title>«Точка общения»|Поиск</title>
 </head>
 <body>
     <main>
@@ -17,25 +17,45 @@
                 <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Найти</button>
             </form>
-            Сортировать по:
             <form class="d-flex search-filter-container">
                 <ul>
+                    <li>Искать:</li>
                     <li>
-                        <input name="filter1" type="radio" id="popularity" value="popularity" checked>
+                        <input name="filter1" type="radio" id="anywhere" value="anywhere" checked>
+                        <label for="anywhere">Везде</label>
+                    </li>
+                    <li>
+                        <input name="filter1" type="radio" id="only-head" value="only-head">
+                        <label for="only-head">Только в заголовках тем</label>
+                    </li>
+                    <li>
+                        <input name="filter1" type="radio" id="only-messages" value="only-messages">
+                        <label for="only-messages">Только в сообщениях</label>
+                    </li>
+                </ul>
+                <ul>
+                    <li>Сортировать по:</li>
+                    <li>
+                        <input name="filter2" type="radio" id="relevance" value="relevance" checked>
+                        <label for="relevance">Релевантности</label>
+                    </li>
+                    <li>
+                        <input name="filter2" type="radio" id="popularity" value="popularity">
                         <label for="popularity">Популярности</label>
                     </li>
                     <li>
-                        <input name="filter1" type="radio" id="creation-date" value="creation-date">
+                        <input name="filter2" type="radio" id="creation-date" value="creation-date">
                         <label for="creation-date">Дате создания темы</label>
                     </li>
                 </ul>
                 <ul>
+                    <br>
                     <li>
-                        <input name="filter2" type="radio" id="descending" value="descending" checked>
+                        <input name="filter3" type="radio" id="descending" value="descending" checked>
                         <label for="descending">По убыванию</label>
                     </li>
                     <li>
-                        <input name="filter2" type="radio" id="adescending" value="ascending">
+                        <input name="filter3" type="radio" id="ascending" value="ascending">
                         <label for="ascending">По возростанию</label>
                     </li>
                 </ul>
@@ -96,7 +116,7 @@
                             <img src="https://kartinkin.net/pics/uploads/posts/2022-09/1662966663_5-kartinkin-net-p-kotik-shlepa-koti-5.jpg" alt="Шлёпа">
                         </a>
                         <div class="text-clip">
-                            <a style="max-width: 100%" href="#">Шлёпа</a>
+                            <a style="max-width: 100%" href="#" title="Автор последнего сообщения">Шлёпа</a>
                             <a href="#" title="Перейти к последнему сообщению">5 часов назад</a>
                         </div>
                     </div>
@@ -133,7 +153,7 @@
                             <img src="https://kartinkin.net/pics/uploads/posts/2022-09/1662966663_5-kartinkin-net-p-kotik-shlepa-koti-5.jpg" alt="Шлёпа">
                         </a>
                         <div class="text-clip">
-                            <a style="max-width: 100%" href="#">Твой батя</a>
+                            <a style="max-width: 100%" href="#" title="Автор последнего сообщения">Твой батя</a>
                             <a href="#" title="Перейти к последнему сообщению">5 часов назад</a>
                         </div>
                     </div>
