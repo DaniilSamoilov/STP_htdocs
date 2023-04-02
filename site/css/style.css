@@ -194,6 +194,15 @@ img {
     color: #fff;
 }
 
+.pagination_link-choose-page {
+    background: #010e7e;
+    border: none;
+    text-align: center;
+    width: 40px;
+    color: gainsboro;
+    font-weight: bold;
+}
+
 @media (max-width:800px){
     .forum-section_col-3,.forum-section_col-4 {
         display:none
