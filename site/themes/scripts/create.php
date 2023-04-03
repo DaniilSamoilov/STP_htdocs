@@ -14,8 +14,7 @@ $chapter_id = htmlspecialchars(trim($_POST['chapter']));
 $post_text = htmlspecialchars(trim($_POST['post_text']));
 
 $sql = "INSERT INTO `posts` (`post_id`, `autor_id`, `chapter_id`, `date`, `post_name`) VALUES (NULL, '$user_id', '$chapter_id', CURRENT_TIMESTAMP, '$post_name')";
-if(!$mysql->query($sql))
-{
+if (!$mysql->query($sql)) {
     $_SESSION['message'] = "Ошибка при добавлении данных в БД";
     header('Location: ../create.php');
     exit();
@@ -23,9 +22,11 @@ if(!$mysql->query($sql))
 $post_id = $mysql->insert_id;
 
 $sql = "INSERT INTO `post_content` (`link_to_content`, `post_text`, `original_post`) VALUES (NULL, '$post_text', '$post_id')";
-if(!$mysql->query($sql))
-{
+if (!$mysql->query($sql)) {
     $_SESSION['message'] = "Ошибка при добавлении данных в БД";
     header('Location: ../create.php');
     exit();
+} else {
+    $_SESSION['message'] = "Тема успешно создана";
+    header('Location: ../this_theme.php&post_id=$postid');
 }
