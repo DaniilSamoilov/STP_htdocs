@@ -8,12 +8,7 @@ span{
 
 a{
     text-decoration: none;
-    color: gainsboro;
     font-weight: bold;
-}
-
-a:hover{
-    color: azure;
 }
 
 img {
@@ -59,6 +54,16 @@ img {
     align-items: center;
     padding: 11px 15px;
     border-top: 1px solid azure
+}
+
+.forum-section_item a,.pagination_item a{
+    text-decoration: none;
+    color: gainsboro;
+    font-weight: bold;
+}
+
+.forum-section_item a:hover,.pagination_item a:hover{
+    color: azure;
 }
 
 .forum-section_col-1 {

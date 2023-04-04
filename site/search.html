@@ -17,45 +17,39 @@
                 <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Найти</button>
             </form>
-            <form class="d-flex search-filter-container">
-                <ul>
-                    <li>Категория:</li>
-                    <li>
-                        <select id="category" name="category">
-                            <option value="">Выберите категорию</option>
-                            <option value="general">Общие вопросы</option>
-                            <option value="dormitorys">Общежития</option>
-                            <option value="events">Мероприятия</option>
-                         </select>
-                    </li>
-                </ul>
-                <ul>
-                    <li>Сортировать по:</li>
-                    <li>
-                        <input name="filter2" type="radio" id="relevance" value="relevance" checked>
-                        <label for="relevance">Релевантности</label>
-                    </li>
-                    <li>
-                        <input name="filter2" type="radio" id="popularity" value="popularity">
-                        <label for="popularity">Популярности</label>
-                    </li>
-                    <li>
-                        <input name="filter2" type="radio" id="creation-date" value="creation-date">
-                        <label for="creation-date">Дате создания темы</label>
-                    </li>
-                </ul>
-                <ul>
-                    <br>
-                    <li>
-                        <input name="filter3" type="radio" id="descending" value="descending" checked>
-                        <label for="descending">По убыванию</label>
-                    </li>
-                    <li>
-                        <input name="filter3" type="radio" id="ascending" value="ascending">
-                        <label for="ascending">По возростанию</label>
-                    </li>
-                </ul>
-            </form>
+            <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Настройки поиска
+            </a>
+            <div class="collapse" id="collapseExample">
+                <form class="d-flex search-filter-container">
+                    <ul>
+                        <li>Сортировать по:</li>
+                        <li>
+                            <input name="filter2" type="radio" id="relevance" value="relevance" checked>
+                            <label for="relevance">Релевантности</label>
+                        </li>
+                        <li>
+                            <input name="filter2" type="radio" id="popularity" value="popularity">
+                            <label for="popularity">Популярности</label>
+                        </li>
+                        <li>
+                            <input name="filter2" type="radio" id="creation-date" value="creation-date">
+                            <label for="creation-date">Дате создания темы</label>
+                        </li>
+                    </ul>
+                    <ul>
+                        <br>
+                        <li>
+                            <input name="filter3" type="radio" id="descending" value="descending" checked>
+                            <label for="descending">По убыванию</label>
+                        </li>
+                        <li>
+                            <input name="filter3" type="radio" id="ascending" value="ascending">
+                            <label for="ascending">По возростанию</label>
+                        </li>
+                    </ul>
+                </form>
+            </div>
         </div>
         <div class="head-container">Результаты поиска</div>
         <div class="forum-top-block">
