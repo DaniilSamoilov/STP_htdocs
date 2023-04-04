@@ -1,13 +1,24 @@
-.navbar{
+header{
     background-color: #010e7e;
 }
 
 .navbar-brand{
     color: white;
+    font-size: 20px;
 }
 
 .navbar-brand:hover{
     color: aqua;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.form-control{
+    border-radius: 100px;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
 }
 
 .nav-link{
