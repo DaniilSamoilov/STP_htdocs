@@ -27,6 +27,6 @@ if (!$mysql->query($sql)) {
     header('Location: ../create.php');
     exit();
 } else {
-    $_SESSION['message'] = "Тема успешно создана";
-    header('Location: ../this_theme.php&post_id=$postid');
+    header('Location: ../this_post?post_id=' . $post_id);
+    exit();
 }
