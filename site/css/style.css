@@ -219,3 +219,90 @@ img {
         font-size: 12px
     }
 }
+
+.minichat-container {
+    width: 400px;
+    height: 300px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.minichat-header {
+    background-color: #010e7e;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    color: #ffffff;
+}
+
+.minichat-message-box {
+    padding: 5px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.minichat-message {
+    margin-bottom: 3px;
+}
+
+.minichat-message img {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.username {
+    color: #010e7e;
+    font-weight: bold;
+}
+
+.username:hover {
+    color: #0216cc;
+}
+
+.minichat-message-text {
+    color: black;
+    margin-left: 3px;
+}
+
+.minichat-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #f1f1f1;
+}
+
+.minichat-input input {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #d8d8d8;
+    border-radius: 3px;
+    outline: none;
+}
+
+.minichat-input button {
+    background-color: #32a852;
+    padding: 7px 15px;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+.minichat-input button:hover {
+    background-color: #268741;
+}
+
+.time {
+  font-size: 0.8em;
+  color: gray;
+  margin-left: 2px;
+  margin-top: 5px;
+}
