@@ -3,11 +3,12 @@ session_start();
 require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
 
-$chapterid = isset($_GET['chapterid']) ? $_GET['chapterid'] : 0;
+$chapterid = isset($_GET['chapterid']) ? $_GET['chapterid'] : null;
+$search = isset($_GET['search']) ? $_GET['search'] : null;
+$search = trim($search);
 // данные для пагинации
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $limit_on_page = isset($_GET['limit_on_page']) ? $_GET['limit_on_page'] : 5;
-echo "$limit_on_page <br>";
 $offset = $limit_on_page * ($page - 1);
 //$count_pages количество страниц вычисляется ниже
 
@@ -15,7 +16,7 @@ $offset = $limit_on_page * ($page - 1);
 // сначала устанавливаются из POST, а затем из COOKIE, чтобы при перелистывании страницы, настройки не сбивались
 $filter1 = isset($_GET['filter1']) ? $_GET['filter1'] : "all_time";
 $filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "creation-date";
-$filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "ascending";
+$filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
 
 ?>
 
@@ -39,15 +40,21 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "ascending";
     <main>
         <div class="head-container">Поиск</div>
         <div class="forum-top-block">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+            <form class="d-flex" role="search" method="GET">
+                <input type="hidden" name="filter2" value="<?= $filter2 ?>">
+                <input type="hidden" name="filter3" value="<?= $filter3 ?>">
+                <input type="hidden" name="filter1" value="<?= $filter1 ?>">
+                <input type="hidden" name="limit_on_page" value="<?= $limit_on_page ?>">
+                <input type="hidden" name="chapterid" value="<?= $chapterid ?>">
+                <input type="hidden" name="page" value="<?= $page ?>">
+                <input class="form-control me-2" type="search" name="search" placeholder="Поиск" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Найти</button>
             </form>
             <a data-bs-toggle="collapse" href="#search-settings" role="button" aria-expanded="false" aria-controls="search-settings">
                 Настройки поиска
             </a>
             <div class="collapse" id="search-settings">
-                <form class="d-flex search-filter-container" action="./?chapterid=1&page=2" method="GET">
+                <form class="d-flex search-filter-container" method="GET">
                     <ul>
                         <li>Сортировать по:</li>
                         <li>
@@ -120,6 +127,7 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "ascending";
                     </ul>
                     <input type="hidden" name="chapterid" value="<?= $chapterid ?>">
                     <input type="hidden" name="page" value="<?= $page ?>">
+                    <input type="hidden" name="search" value="<?= $search ?>">
                     <button type="submit">Подтвердить сортировку</button>
 
                 </form>
@@ -135,163 +143,195 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "ascending";
         <div class="forum-top-block">
             <ul class="forum-section_list">
                 <?php
-                if (!isset($_GET['chapterid'])) {
-                    echo "Id раздела не указан";
-                } else {
-                    $chapterid = $_GET['chapterid'];
-                    $sql = "SELECT * FROM `chapters` WHERE `id` = '$chapterid'";
-                    if (!$mysql->query($sql)->num_rows) {
+                $sql = "SELECT * FROM `posts` `p` JOIN `post_content` `c` ON `p`.`post_id` = `c`.`original_post`  WHERE ";
+                //выбор какой sql-запрос задать в зависимости от поиска
+                if ($chapterid != null) {
+                    $sql2 = "SELECT * FROM `chapters` WHERE `id` = '$chapterid'";
+                    if (!$mysql->query($sql2)->num_rows) {
                         echo "Раздела не существует";
+                        exit();
                     } else {
-                        $sql = "SELECT * FROM `posts` WHERE `chapter_id` = '$chapterid'";
-                        $posts = $mysql->query($sql);
-                        $count_posts = $posts->num_rows;
-
-                        $count_pages = round($count_posts / $limit_on_page, 0);
-
-                        if ($count_posts == 0) {
-                            echo "<p>Темы для данного раздела не найдены</p>";
-                        } else {
-                            //выбор какой sql-запрос задать в зависимости от сортировки
-                            $sort = "";
-                            switch ($filter1) {
-                                case 'today':
-                                    $sort .= "AND `date` >= NOW() - INTERVAL 1 DAY";
-                                    break;
-                                case 'week':
-                                    $sort .= "AND `date` >= NOW() - INTERVAL 1 WEEK";
-                                    break;
-                                case 'month':
-                                    $sort .= "AND `date` >= NOW() - INTERVAL 1 MONTH";
-                                    break;
-                                case 'year':
-                                    $sort .= "AND `date` >= NOW() - INTERVAL 1 YEAR";
-                                    break;
-                                case 'all_time':
-                                    $sort = "";
-                                    break;
-                            }
-                            $sort .= " ORDER BY ";
-                            switch ($filter2) {
-                                case 'relevance':
-                                    $sort .= "`visitors` / `rating`";
-                                    break;
-                                case 'popularity':
-                                    $sort .= "`visitors`";
-                                    break;
-                                case 'creation-date':
-                                    $sort .= "`date`";
-                                    break;
-                            }
-                            switch ($filter3) {
-                                case 'descending':
-                                    $sort .= " DESC";
-                                    break;
-                                case 'ascending':
-                                    break;
-                            }
-
-                            //
-                            $sql = "SELECT * FROM `posts` WHERE `chapter_id` = '$chapterid' " . $sort . " LIMIT $limit_on_page OFFSET $offset";
-                            if (!$posts = $mysql->query($sql)) {
-                                echo "Ошибка запроса БД";
-                                exit();
-                            }
-                ?>
-                            <ul class="forum-section_list">
-                                <?php
-                                while ($post = $posts->fetch_assoc()) {
-                                    $user = get_user_by_id($mysql, $post['autor_id']);
-                                ?>
-
-                                    <ul class="forum-section_item">
-                                        <div class="forum-section_col-1">
-                                            <a href="#">
-                                                <img src="<?= $user['avatar'] ?>" alt="<?= $user['avatar'] ?>">
-                                            </a>
-                                        </div>
-                                        <div class="forum-section_col-2">
-                                            <div class="forum-section_title">
-                                                <a href="./this_post.php?post_id=<?= $post['post_id'] ?>" title="Название темы"><?= $post['post_name']; ?></a>
-                                            </div>
-                                            <div class="forum-section_name">
-                                                <a href="#" title="Автор темы"><?= $user['nick_name']; ?></a>
-                                                <span title="Дата создания темы"><?= $post['date']; ?></span>
-                                            </div>
-                                            <!--Далее будет реализовано после добавления комментариев-->
-                                            <div class="forum-section_mes--mobile">
-                                                <span>Сообщений: 15</span>
-                                                <span>5 часов назад</span>
-                                            </div>
-                                        </div>
-                                        <div class="forum-section_col-3">
-                                            <p>Сообщений:
-                                                <span>15</span>
-                                            </p>
-                                            <p>Просмотров:
-                                                <span>356</span>
-                                            </p>
-                                        </div>
-                                    </ul>
-                                <?php
-                                }
-                                ?>
-                            </ul>
-                            <ul class="pagination">
-                                <li class="pagination_item">
-                                    <a class="pagination_link" href="?filter2=<?= $filter2 ?>&filter3=<?= $filter3 ?>&filter1=<?= $filter1 ?>&limit_on_page=<?= $limit_on_page ?>&chapterid=<?= $chapterid ?>&page=1">
-                                        << </a>
-                                </li>
-
-                                <?php
-                                if ($page == 1) {
-                                ?>
-                                    <li class="pagination_item">
-                                        <a class="pagination_link pagination_link--active" href="#">1</a>
-                                    </li>
-                                    <li class="pagination_item">
-                                        <a class="pagination_link" href="?filter2=<?= $filter2 ?>&filter3=<?= $filter3 ?>&filter1=<?= $filter1 ?>&limit_on_page=<?= $limit_on_page ?>&chapterid=<?= $chapterid ?>&page=2">
-                                            2</a>
-                                    </li>
-                                <?php
-                                } elseif ($page == $count_pages) {
-                                ?>
-                                    <li class="pagination_item">
-                                        <a class="pagination_link" href="?filter2=<?= $filter2 ?>&filter3=<?= $filter3 ?>&filter1=<?= $filter1 ?>&limit_on_page=<?= $limit_on_page ?>&chapterid=<?= $chapterid ?>&page=<?= $page - 1; ?>">
-                                            <?= $page - 1; ?></a>
-                                    </li>
-                                    <li class="pagination_item">
-                                        <a class="pagination_link pagination_link--active" href="#">
-                                            <?= $page; ?></a>
-                                    </li>
-                                <?php
-                                } else {
-                                ?>
-                                    <li class="pagination_item">
-                                        <a class="pagination_link" href="?filter2=<?= $filter2 ?>&filter3=<?= $filter3 ?>&filter1=<?= $filter1 ?>&limit_on_page=<?= $limit_on_page ?> &chapterid=<?= $chapterid ?>&page=<?= $page - 1; ?>">
-                                            <?= $page - 1; ?></a>
-                                    </li>
-                                    <li class="pagination_item">
-                                        <a class="pagination_link pagination_link--active" href="#">
-                                            <?= $page; ?></a>
-                                    </li>
-                                    <li class="pagination_item">
-                                        <a class="pagination_link" href="?filter2=<?= $filter2 ?>&filter3=<?= $filter3 ?>&filter1=<?= $filter1 ?>&limit_on_page=<?= $limit_on_page ?>&chapterid=<?= $chapterid ?>&page=<?= $page + 1; ?>">
-                                            <?= $page + 1; ?></a>
-                                    </li>
-                                <?php
-                                }
-                                ?>
-                                <li class="pagination_item">
-                                    <a class="pagination_link" href="?filter2=<?= $filter2 ?>&filter3=<?= $filter3 ?>&filter1=<?= $filter1 ?>&limit_on_page=<?= $limit_on_page ?>&chapterid=<?= $chapterid ?>&page=<?= $count_pages ?>">
-                                        >></a>
-                                </li>
-                            </ul>
-                <?php
-                        }
+                        $sql .= "`p`.`chapter_id` = '$chapterid' ";
                     }
+                } else {
+                    $sql .= "1 ";
                 }
+                if ($search != null) {
+                    $sql .= "AND (";
+                    $search = preg_replace('/[\s]{2,}/', ' ', $search);
+                    $search = explode(' ', $search);
+                    $count = count($search);
+                    $i = 0;
+                    foreach ($search as $word) {
+                        $i++;
+                        if ($i < $count)
+                            $sql .= "`p`.`post_name` LIKE'%" . $word . "%' OR `c`.`post_text` LIKE'%" . $word . "%' OR ";
+                        else
+                            $sql .= "`p`.`post_name` LIKE'%" . $word . "%' OR `c`.`post_text` LIKE'%" . $word . "%'";
+                    }
+                    $sql .= ") ";
+                }
+                //Подсчёт количества страниц
+                if (!$posts = $mysql->query($sql)) {
+                    echo "Ошибка запроса БД";
+                    exit();
+                }
+                $count_posts = $posts->num_rows;
+                $count_pages = ceil($count_posts / $limit_on_page);
+                $count_pages = $count_pages == 0 ? 1 : $count_pages;
+
+                //выбор какой sql-запрос задать в зависимости от сортировки
+                $sort = "";
+                switch ($filter1) {
+                    case 'today':
+                        $sort .= "AND `p`.`date` >= NOW() - INTERVAL 1 DAY";
+                        break;
+                    case 'week':
+                        $sort .= "AND `p`.`date` >= NOW() - INTERVAL 1 WEEK";
+                        break;
+                    case 'month':
+                        $sort .= "AND `p`.`date` >= NOW() - INTERVAL 1 MONTH";
+                        break;
+                    case 'year':
+                        $sort .= "AND `p`.`date` >= NOW() - INTERVAL 1 YEAR";
+                        break;
+                    case 'all_time':
+                        $sort = "";
+                        break;
+                }
+                $sort .= " ORDER BY ";
+                switch ($filter2) {
+                    case 'relevance':
+                        $sort .= "`p`.`visitors` / `rating`";
+                        break;
+                    case 'popularity':
+                        $sort .= "`p`.`visitors`";
+                        break;
+                    case 'creation-date':
+                        $sort .= "`p`.`date`";
+                        break;
+                }
+                switch ($filter3) {
+                    case 'descending':
+                        $sort .= " DESC";
+                        break;
+                    case 'ascending':
+                        break;
+                }
+                //
+
+                $sql .= $sort . " LIMIT $limit_on_page OFFSET $offset";
+                if (!$posts = $mysql->query($sql)) {
+                    echo "Ошибка запроса БД";
+                    exit();
+                }
+
+
                 ?>
+                <ul class="forum-section_list">
+                    <?php
+                    if (!$posts->num_rows) {
+                        echo "Темы не найдены";
+                    }
+                    while ($post = $posts->fetch_assoc()) {
+                        $user = get_user_by_id($mysql, $post['autor_id']);
+                    ?>
+
+                        <ul class="forum-section_item">
+                            <div class="forum-section_col-1">
+                                <a href="#">
+                                    <img src="<?= $user['avatar'] ?>" alt="<?= $user['avatar'] ?>">
+                                </a>
+                            </div>
+                            <div class="forum-section_col-2">
+                                <div class="forum-section_title">
+                                    <a href="./this_post.php?post_id=<?= $post['post_id'] ?>" title="Название темы"><?= $post['post_name']; ?></a>
+                                </div>
+                                <div class="forum-section_name">
+                                    <a href="#" title="Автор темы"><?= $user['nick_name']; ?></a>
+                                    <span title="Дата создания темы"><?= $post['date']; ?></span>
+                                </div>
+                                <!--Далее будет реализовано после добавления комментариев-->
+                                <div class="forum-section_mes--mobile">
+                                    <span>Сообщений: 15</span>
+                                    <span>5 часов назад</span>
+                                </div>
+                            </div>
+                            <div class="forum-section_col-3">
+                                <p>Сообщений:
+                                    <span>15</span>
+                                </p>
+                                <p>Просмотров:
+                                    <span>356</span>
+                                </p>
+                            </div>
+                        </ul>
+                    <?php
+                    }
+                    $url = "?";
+                    $url .= $filter1 != "all_time" ? "filter1=" . $filter1 : "";
+                    $url .= $filter2 != "creation-date" ? "&filter2" . $filter2 : "";
+                    $url .= $filter3 != "descending" ? "&filter3" . $filter3 : "";
+                    $url .= $limit_on_page != 5 ? "&limit_on_page=" . $limit_on_page : "";
+                    $url .= $chapterid != null ? "&chapterid=" . $chapterid : "";
+                    ?>
+                </ul>
+                <ul class="pagination">
+                    <li class="pagination_item">
+                        <a class="pagination_link" href="<?= $url ?>&page=1">
+                            << </a>
+                    </li>
+
+                    <?php
+                    if ($page == 1 and $count_pages != 1) {
+                    ?>
+                        <li class="pagination_item">
+                            <a class="pagination_link pagination_link--active" href="#">1</a>
+                        </li>
+                        <li class="pagination_item">
+                            <a class="pagination_link" href="<?= $url ?>&page=2">
+                                2</a>
+                        </li>
+                    <?php
+                    } elseif ($page == 1 and $count_pages == 1) {
+                    ?>
+                        <li class="pagination_item">
+                            <a class="pagination_link pagination_link--active" href="#">1</a>
+                        </li>
+                    <?php
+                    } elseif ($page >= $count_pages) {
+                    ?>
+                        <li class="pagination_item">
+                            <a class="pagination_link" href="<?= $url ?>&page=<?= $page - 1; ?>">
+                                <?= $count_pages - 1; ?></a>
+                        </li>
+                        <li class="pagination_item">
+                            <a class="pagination_link pagination_link--active" href="#">
+                                <?= $count_pages; ?></a>
+                        </li>
+                    <?php
+                    } else {
+                    ?>
+                        <li class="pagination_item">
+                            <a class="pagination_link" href="<?= $url ?>&page=<?= $page - 1; ?>">
+                                <?= $page - 1; ?></a>
+                        </li>
+                        <li class="pagination_item">
+                            <a class="pagination_link pagination_link--active" href="#">
+                                <?= $page; ?></a>
+                        </li>
+                        <li class="pagination_item">
+                            <a class="pagination_link" href="<?= $url ?>&page=<?= $page + 1; ?>">
+                                <?= $page + 1; ?></a>
+                        </li>
+                    <?php
+                    }
+                    ?>
+                    <li class="pagination_item">
+                        <a class="pagination_link" href="<?= $url ?>&page=<?= $count_pages ?>">
+                            >></a>
+                    </li>
+                </ul>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
 </body>
