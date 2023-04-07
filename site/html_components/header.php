@@ -1,9 +1,9 @@
 <header class="py-3">
     <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
-        <a class="navbar-brand" href="#">Точка общения</a>
+        <a class="navbar-brand" href="/index.php">Точка общения</a>
 
         <div class="d-flex align-items-center">
-            <form class="w-100 me-3" role="search">
+            <form class="w-100 me-3" role="search" method="GET" action="/search.php">
                 <input type="search" class="form-control" placeholder="Поиск" aria-label="Search">
             </form>
 
@@ -12,10 +12,16 @@
                     <img src="https://clck.ru/343gZm" alt="Профиль" width="40" height="40" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small shadow">
-                    <li><a class="dropdown-item" href="#">Профиль</a></li>
+                    <?php if (isset($_SESSION['user']['id'])) {
+                    ?><li><a class="dropdown-item" href="/profile/">Профиль</a></li>
+                    <?php } else {
+                    ?><li><a class="dropdown-item" href="/authorization/">Войти</a></li>
+                    <?php } ?>
                     <li><a class="dropdown-item" href="#">Личные сообщения</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Выйти</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="/authorization/scripts/logout.php">Выйти</a></li>
                 </ul>
             </div>
         </div>
