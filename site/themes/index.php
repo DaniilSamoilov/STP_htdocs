@@ -13,7 +13,6 @@ $offset = $limit_on_page * ($page - 1);
 //$count_pages количество страниц вычисляется ниже
 
 // данные фильтрации и сортировки
-// сначала устанавливаются из POST, а затем из COOKIE, чтобы при перелистывании страницы, настройки не сбивались
 $filter1 = isset($_GET['filter1']) ? $_GET['filter1'] : "all_time";
 $filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "creation-date";
 $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
@@ -158,11 +157,11 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
                 }
                 if ($search != null) {
                     $sql .= "AND (";
-                    $search = preg_replace('/[\s]{2,}/', ' ', $search);
-                    $search = explode(' ', $search);
-                    $count = count($search);
+                    $search_temp = preg_replace('/[\s]{2,}/', ' ', $search);
+                    $search_temp = explode(' ', $search_temp);
+                    $count = count($search_temp);
                     $i = 0;
-                    foreach ($search as $word) {
+                    foreach ($search_temp as $word) {
                         $i++;
                         if ($i < $count)
                             $sql .= "`p`.`post_name` LIKE'%" . $word . "%' OR `c`.`post_text` LIKE'%" . $word . "%' OR ";
@@ -274,6 +273,7 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
                     $url .= $filter3 != "descending" ? "&filter3" . $filter3 : "";
                     $url .= $limit_on_page != 5 ? "&limit_on_page=" . $limit_on_page : "";
                     $url .= $chapterid != null ? "&chapterid=" . $chapterid : "";
+                    $url .= $search != null ? "&search=" . $search : "";
                     ?>
                 </ul>
                 <ul class="pagination">

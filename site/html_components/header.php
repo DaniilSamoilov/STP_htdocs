@@ -4,7 +4,7 @@
 
         <div class="d-flex align-items-center">
             <form class="w-100 me-3" role="search" method="GET" action="/search.php">
-                <input type="search" class="form-control" placeholder="Поиск" aria-label="Search">
+                <input type="search" class="form-control" name="search" placeholder="Поиск" aria-label="Search">
             </form>
 
             <div class="flex-shrink-0 dropdown">
