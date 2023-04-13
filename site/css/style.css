@@ -358,7 +358,7 @@ img {
 .Post_RightCol{
     display: flex;
     flex-direction: column;
-    /* margin-right: 24px; */
+    width: 100%;
     padding: 10px;
 }
 
