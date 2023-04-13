@@ -2,6 +2,7 @@
 session_start();
 require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
+require_once("../scripts/operations_with_files.php");
 
 if (isset($_GET['post_id']) and is_numeric($_GET['post_id'])) {
     $post_id = $_GET['post_id'];
@@ -17,7 +18,10 @@ if (!$post = $mysql->query($sql)) {
 }
 
 $post = $post->fetch_assoc();
-print_r($post);
+
+$link_to_content = $post['link_to_content'];
+$link_to_content = explode("|", $link_to_content);
+const path_to_file = "../user_files/themes/";
 ?>
 
 <div class="Инфо об посте">
@@ -36,18 +40,23 @@ print_r($post);
 <div class="различные фотографии и другие файлы, которые можно скачать">
     <?php
     foreach ($link_to_content as $file) {
+        $file_name = $file;
+        $file = path_to_file . $file;
         if (is_image($file)) { ?>
-            <a href="#">
-                <img src="<?= $file ?>" alt="<?= $file ?>">
-            </a>
+            <img src="<?= $file ?>" alt="<?= get_name_without_digits($file_name) ?>" width="189" height="255">
+
     <?php }
     }
     ?>
-
+</div>
+<div class="файлы, которые нельзя посмотреть, но можно скачать">
     <?php
     foreach ($link_to_content as $file) {
+        $file_name = $file;
+        $file = path_to_file . $file;
+        echo (!is_image($file));
         if (!is_image($file)) { ?>
-            <a href="#" download="">текст ссылки</a>
+            <a href="<?= $file ?>" download=""><?= get_name_without_digits($file_name); ?></a>
     <?php }
     }
     ?>
