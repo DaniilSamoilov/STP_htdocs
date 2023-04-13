@@ -6,8 +6,10 @@ if (!isset($_SESSION['user'])) {
 }
 require_once("../scripts/get_user_info.php");
 require_once("../scripts/connect_to_db.php");
+require_once("../scripts/operations_with_files.php");
 
 $user = get_user_by_id($mysql,  $_SESSION['user']['id']);
+const path_to_avatar = "../user_files/users/";
 ?>
 
 <!DOCTYPE HTML>
@@ -20,6 +22,13 @@ $user = get_user_by_id($mysql,  $_SESSION['user']['id']);
 
 <body align="center">
   <h2>Профиль<h2>
+
+      <div>
+      <img src="<?= path_to_avatar.$user['avatar'] ?>" alt="<?= get_name_without_digits($user['avatar']) ?>" width="189" height="255">
+      <br>
+      <button onclick="window.location.href = '/authorization/change_avatar.php';">Сменить аватар</button>
+      </div>
+
 
       <h2><?= $user['nick_name'] ?></h2>
       <button onclick="window.location.href = '/authorization/change_nick_name.php';">Смена ника</button>

@@ -6,6 +6,7 @@ $login = htmlspecialchars(trim($_POST['login']));
 $passwd = htmlspecialchars(trim($_POST['passwd']));
 $conf_passwd = htmlspecialchars(trim($_POST['conf_passwd']));
 $nick_name = htmlspecialchars(trim($_POST['nick_name']));
+$avatar = "default.png";
 
 if ($passwd !== $conf_passwd) {
     $_SESSION['message'] = "Пароли не совпадают";
@@ -27,7 +28,7 @@ if ($mysql->query($sql)->num_rows) {
     exit();
 }
 
-$sql = "INSERT INTO `users` (`id`, `login`, `password`, `nick_name`, `email`, `avatar`, `score`) VALUES (NULL, '$login', '$passwd', '$nick_name', '', '', '0')";
+$sql = "INSERT INTO `users` (`id`, `login`, `password`, `nick_name`, `email`, `avatar`, `score`) VALUES (NULL, '$login', '$passwd', '$nick_name', '', '$avatar', '0')";
 //echo $sql;
 $mysql->query($sql);
 $mysql->close();

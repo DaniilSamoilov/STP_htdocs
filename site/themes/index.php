@@ -2,6 +2,9 @@
 session_start();
 require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
+require_once("../scripts/operations_with_files.php");
+
+const path_to_avatar = "../user_files/users/";
 
 $chapterid = isset($_GET['chapterid']) ? $_GET['chapterid'] : null;
 $search = isset($_GET['search']) ? $_GET['search'] : null;
@@ -238,8 +241,8 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
 
                         <ul class="forum-section_item">
                             <div class="forum-section_col-1">
-                                <a href="#">
-                                    <img src="<?= $user['avatar'] ?>" alt="<?= $user['avatar'] ?>">
+                                <a href="/profile/index.php?user_id=<?= $user['id']?>">
+                                    <img src="<?= path_to_avatar.$user['avatar'] ?>" alt="<?= get_name_without_digits($user['avatar']) ?>">
                                 </a>
                             </div>
                             <div class="forum-section_col-2">

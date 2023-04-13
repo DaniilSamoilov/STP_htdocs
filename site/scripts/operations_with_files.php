@@ -4,7 +4,7 @@
 function is_image($file)
 {
     $ext = pathinfo($file, PATHINFO_EXTENSION);
-    if ($ext == "png" || $ext == "jpeg" || $ext == "gif") {
+    if ($ext == "png" || $ext == "jpeg" || $ext == "jpeg" || $ext == "gif") {
         return 1;
     }
     return 0;
