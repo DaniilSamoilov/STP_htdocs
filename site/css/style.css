@@ -367,7 +367,11 @@ img {
     font-size: small;
 }
 
+.Post_File{
+    display: grid;
+}
+
 .Post_File img{
-    max-width: 350px;
+    max-width: 300px;
     height: auto;
 }

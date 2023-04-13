@@ -179,6 +179,7 @@ $filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "descending";
                     $url .= $search != null ? "&search=" . $search : "";
                     ?>
                 </ul>
+            </ul>
                 <ul class="pagination">
                     <li class="pagination_item">
                         <a class="pagination_link" href="<?= $url ?>&page=1">
