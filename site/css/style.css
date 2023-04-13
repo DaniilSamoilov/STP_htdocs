@@ -8,12 +8,7 @@ span{
 
 a{
     text-decoration: none;
-    color: gainsboro;
     font-weight: bold;
-}
-
-a:hover{
-    color: azure;
 }
 
 img {
@@ -30,12 +25,18 @@ img {
     padding: 5px;
 }
 
+.head-container h3{
+    margin-bottom: 0px;
+}
+
 .forum-top-block{
     background-color: azure;
     margin: 15px;
     margin-top: 0px;
     padding: 20px;
 }
+
+/* Стили для страницы поиска*/
 
 .search-filter-container ul{
     margin-left: 0;
@@ -59,6 +60,16 @@ img {
     align-items: center;
     padding: 11px 15px;
     border-top: 1px solid azure
+}
+
+.forum-section_item a,.pagination_item a{
+    text-decoration: none;
+    color: gainsboro;
+    font-weight: bold;
+}
+
+.forum-section_item a:hover,.pagination_item a:hover{
+    color: azure;
 }
 
 .forum-section_col-1 {
@@ -194,6 +205,15 @@ img {
     color: #fff;
 }
 
+.pagination_link-choose-page {
+    background: #010e7e;
+    border: none;
+    text-align: center;
+    width: 40px;
+    color: gainsboro;
+    font-weight: bold;
+}
+
 @media (max-width:800px){
     .forum-section_col-3,.forum-section_col-4 {
         display:none
@@ -204,4 +224,150 @@ img {
         justify-content: space-between;
         font-size: 12px
     }
+}
+
+/* Мини-чат */
+
+.minichat-container {
+    width: 400px;
+    height: 300px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.minichat-header {
+    background-color: #010e7e;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    color: #ffffff;
+}
+
+.minichat-message-box {
+    padding: 5px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.minichat-message {
+    margin-bottom: 3px;
+}
+
+.minichat-message img {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.username {
+    color: #010e7e;
+    font-weight: bold;
+}
+
+.username:hover {
+    color: #0216cc;
+}
+
+.minichat-message-text {
+    color: black;
+    margin-left: 3px;
+}
+
+.minichat-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #f1f1f1;
+}
+
+.minichat-input input {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #d8d8d8;
+    border-radius: 3px;
+    outline: none;
+}
+
+.minichat-input button {
+    background-color: #32a852;
+    padding: 7px 15px;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+.minichat-input button:hover {
+    background-color: #268741;
+}
+
+.time {
+  font-size: 0.8em;
+  color: gray;
+  margin-left: 2px;
+  margin-top: 5px;
+}
+
+/* Пост */
+
+.Post{
+    display: flex;
+    border-bottom: 5px solid #010e7e;
+}
+
+.MainPost_info{
+    text-align: left;
+    font-size: small;
+}
+
+.Post_LeftCol{
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #010e7e;
+    padding-top: 5px;
+    width: 120px;
+    align-items: center;
+}
+
+.Post_LeftCol .username{
+    text-align: center;
+}
+
+.Post_LeftCol img{
+    width: 75%;
+    border-radius: 100%;
+    display: block;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.author_info{
+    width: 150px;
+    /* font-size: 12px; */
+    transform: scale(.8);
+    /* transform-origin: 0 100%; */
+}
+
+.Post_RightCol{
+    display: flex;
+    flex-direction: column;
+    /* margin-right: 24px; */
+    padding: 10px;
+}
+
+.Post_info{
+    border-bottom: 1px solid #010e7e;
+    font-size: small;
+}
+
+.Post_File img{
+    max-width: 350px;
+    height: auto;
 }
