@@ -7,27 +7,59 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>«Точка общения»|Поиск</title>
+    <title>This_post</title>
 </head>
 <body>
-    <div class="Post_info">
-        Имя поста <?= $post['post_name'] ?>
-        Дата публикации <?= $post['date'] ?>
-        Количество посетителей <?= $post['visitors'] ?>
-        Рейтинг <?= $post['rating'] ?>
+    <div class="MainPost_info head-container">
+        <h3>Имя поста <?= $post['post_name'] ?></h3>
+        <span>
+            Дата публикации: <?= $post['date'] ?>
+            Количество посетителей: <?= $post['visitors'] ?>
+            Рейтинг: <?= $post['rating'] ?>
+        </span>
     </div>
-    
-    <div class="Post_text">
-        ?= $post['post_text'] ?>
+    <div class="forum-top-block">
+        <div class="Post">
+            <div class="Post_LeftCol">
+                <a class="username" href="#">Giga_Chad-3000</a>
+                <a href="#">
+                    <img src="https://kartinkin.net/pics/uploads/posts/2022-09/1662966663_5-kartinkin-net-p-kotik-shlepa-koti-5.jpg" alt="Шлёпа">
+                </a>
+                <p class="author_info">Рейтинг:14689</p>
+            </div>
+            <div class="Post_RightCol">
+                <div class="Post_info">15 марта 2023</div>
+                <text>Нефритовые ежи - это уникальные существа, обладающие способностью к интерполяции. Их способность к интерполяции позволяет им изменять свою форму и размер, чтобы приспосабливаться к различным условиям окружающей среды. Однако, несмотря на их уникальные способности, нефритовые ежи оказывают негативное влияние на коллентилиум вселенной.<br>
+                Интерполяция нефритовых ежей приводит к искажению пространства-времени, что может привести к серьезным последствиям для вселенной. Например, это может привести к смещению планет из их орбит, изменению траекторий звезд и галактик, а также к возникновению черных дыр и других космических аномалий.<br>
+                Чтобы решить эту проблему, необходимо провести серьезные исследования и разработать специальные технологии, которые позволят контролировать интерполяцию нефритовых ежей. Это может включать в себя создание специальных устройств, которые будут регулировать интерполяцию, а также разработку новых методов исследования и контроля за этими существами.<br>
+                Кроме того, необходимо провести обширную кампанию по информированию общественности о негативном влиянии нефритовых ежей на вселенную и о необходимости принятия мер для их контроля. Только таким образом мы сможем предотвратить серьезные последствия для вселенной и обеспечить ее безопасность и стабильность в будущем.<?= $post['post_text'] ?></text>
+                <div class="Post_File">
+                    <a href="#" download="">текст ссылки</a>
+                    <a href="#">
+                        <img src="https://img2.rudalle.ru/images/fa/81/9c/fa819cac88224d3c99b9bd3ab47c9654_00000.jpg" alt="<?= $file ?>">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="Post">
+            <div class="Post_LeftCol">
+                <a class="username" href="#">Giga_Chad-3000</a>
+                <a href="#">
+                    <img src="https://kartinkin.net/pics/uploads/posts/2022-09/1662966663_5-kartinkin-net-p-kotik-shlepa-koti-5.jpg" alt="Шлёпа">
+                </a>
+                <p class="author_info">Рейтинг:14689</p>
+            </div>
+            <div class="Post_RightCol">
+                <div class="Post_info">15 марта 2023</div>
+                <text>Текст<?= $post['post_text'] ?></text>
+                <div class="Post_File">
+                    <a href="#" download="">текст ссылки</a>
+                    <a href="#">
+                        <img src="<?= $file ?>" alt="<?= $file ?>">
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <br>
-    
-    <div class="различные фотографии и другие файлы, которые можно скачать">
-        <a href="#">
-            <img src="<?= $file ?>" alt="<?= $file ?>">
-        </a>
-
-        <a href="#" download="">текст ссылки</a>
 </body>
 </html>
