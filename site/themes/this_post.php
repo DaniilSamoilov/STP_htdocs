@@ -75,29 +75,32 @@ require_once("../html_components/header.php");
                 <text><?= $post['post_text'] ?></text>
                 <div class="Post_File img">
                     <?php
-                    //вывод изображений
-                    foreach ($link_to_content as $file) {
-                        $file_name = $file;
-                        $file = path_to_file . $file;
-                        if (is_image($file)) { ?>
-                            <img src="<?= $file ?>" alt="<?= get_name_without_digits($file_name) ?>">
+                    //проверка, содержатся ли в $link_to_content элементы
+                    if ($link_to_content[0] != null) {
+                        //вывод изображений
+                        foreach ($link_to_content as $file) {
+                            $file_name = $file;
+                            $file = path_to_file . $file;
+                            if (is_image($file)) { ?>
+                                <img src="<?= $file ?>" alt="<?= get_name_without_digits($file_name) ?>">
 
-                    <?php }
-                    }
-                    ?>
+                        <?php }
+                        }
+                        ?>
                 </div>
                 <div class="Post_File">
                     <?php
-                    //вывод других файлов
-                    foreach ($link_to_content as $file) {
-                        $file_name = $file;
-                        $file = path_to_file . $file;
-                        if (!is_image($file)) { ?>
+                        //вывод других файлов
+                        foreach ($link_to_content as $file) {
+                            $file_name = $file;
+                            $file = path_to_file . $file;
+                            if (!is_image($file)) { ?>
                             <a href="<?= $file ?>" download=""><?= get_name_without_digits($file_name); ?></a>
 
-                    <?php }
+                <?php }
+                        }
                     }
-                    ?>
+                ?>
 
                 </div>
             </div>
