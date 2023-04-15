@@ -1,5 +1,7 @@
 <?php
-
+//путь к файлам, загруженным пользователями
+const path_to_file = "/user_files/themes/";
+const path_to_avatar = "/user_files/users/";
 // Является ли файл доступным для тега <ing>
 function is_image($file)
 {

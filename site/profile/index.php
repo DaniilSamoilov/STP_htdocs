@@ -9,7 +9,6 @@ require_once("../scripts/connect_to_db.php");
 require_once("../scripts/operations_with_files.php");
 
 $user = get_user_by_id($mysql,  $_SESSION['user']['id']);
-const path_to_avatar = "../user_files/users/";
 ?>
 
 <!DOCTYPE HTML>

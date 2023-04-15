@@ -4,8 +4,6 @@ require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
 require_once("../scripts/operations_with_files.php");
 
-const path_to_avatar = "../user_files/users/";
-
 $chapterid = isset($_GET['chapterid']) ? $_GET['chapterid'] : null;
 $search = isset($_GET['search']) ? $_GET['search'] : null;
 $search = trim($search);
@@ -21,8 +19,6 @@ $filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "creation-date";
 $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
