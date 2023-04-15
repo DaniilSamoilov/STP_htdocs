@@ -28,7 +28,8 @@ if ($mysql->query($sql)->num_rows) {
     exit();
 }
 
-$sql = "INSERT INTO `users` (`id`, `login`, `password`, `nick_name`, `email`, `avatar`, `score`) VALUES (NULL, '$login', '$passwd', '$nick_name', '', '$avatar', '0')";
+$sql = "INSERT INTO `users` (`id`, `login`, `password`, `nick_name`, `email`, `avatar`, `score`)
+VALUES (NULL, '$login', '$passwd', '$nick_name', '', '$avatar', '0')";
 //echo $sql;
 $mysql->query($sql);
 $mysql->close();

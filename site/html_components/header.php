@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+require_once("/OSPanel/domains/site/scripts/connect_to_db.php");
+require_once("/OSPanel/domains/site/scripts/get_user_info.php");
+require_once("/OSPanel/domains/site/scripts/operations_with_files.php");
+
+?>
+
 <header class="py-3">
     <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
         <a class="navbar-brand" href="/index.php">Точка общения</a>
@@ -8,9 +17,22 @@
             </form>
 
             <div class="flex-shrink-0 dropdown">
+                <?php
+                if (isset($_SESSION['user']['id'])) {
+                    $user = get_user_by_id($mysql, $_SESSION['user']['id']);
+                ?>
+                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<?= path_to_avatar.$user['avatar']?>" alt="Профиль" width="40" height="40" class="rounded-circle">
+                    </a>
+                <?php
+                } else {
+                ?>
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://clck.ru/343gZm" alt="Профиль" width="40" height="40" class="rounded-circle">
-                </a>
+                        <img src="<?= path_to_avatar."default.png"?>" alt="Профиль" width="40" height="40" class="rounded-circle">
+                    </a>
+                <?php
+                }
+                ?>
                 <ul class="dropdown-menu text-small shadow">
                     <?php if (isset($_SESSION['user']['id'])) {
                     ?><li><a class="dropdown-item" href="/profile/">Профиль</a></li>

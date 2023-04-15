@@ -3,13 +3,19 @@ session_start();
 require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
 require_once("../scripts/operations_with_files.php");
+require_once("../scripts/comments_under_post.php");
 
 if (isset($_GET['post_id']) and is_numeric($_GET['post_id'])) {
     $post_id = $_GET['post_id'];
 } else {
     echo "Id поста не указан";
+    exit();
 }
+//получение имени поста
+$sql = "SELECT `post_name` FROM `posts` WHERE `post_id` = $post_id";
+$post_name = $mysql->query($sql)->fetch_assoc()['post_name'];
 
+//запрос к БД с комментариями
 $sql = "SELECT * FROM `post_content` `c` JOIN `posts` `p` ON `c`.`original_post` = `p`.`post_id` WHERE `original_post` = $post_id";
 
 if (!$post = $mysql->query($sql)) {
@@ -18,97 +24,106 @@ if (!$post = $mysql->query($sql)) {
 }
 
 $post = $post->fetch_assoc();
-
+// замена символов /n на <br>
+$post['post_text'] = str_replace("\n", "<br>", $post['post_text']);
+//ссылка на имя прикреплённых файлов
 $link_to_content = $post['link_to_content'];
 $link_to_content = explode("|", $link_to_content);
-const path_to_file = "../user_files/themes/";
+
+//получение инфо об авторе
+$author = get_user_by_id($mysql, $post['autor_id']);
 ?>
 
-<div class="Инфо об посте">
-    Имя поста <?= $post['post_name'] ?>
-    Дата публикации <?= $post['date'] ?>
-    Количество посетителей <?= $post['visitors'] ?>
-    Рейтинг <?= $post['rating'] ?>
-</div>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="текст поста">
-    <?= $post['post_text'] ?>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>«Точка общения»|<?= $post_name ?></title>
+</head>
+<?php
+require_once("../html_components/header.php");
+?>
 
-<br>
+<body>
 
-<div class="различные фотографии и другие файлы, которые можно скачать">
-    <?php
-    foreach ($link_to_content as $file) {
-        $file_name = $file;
-        $file = path_to_file . $file;
-        if (is_image($file)) { ?>
-            <img src="<?= $file ?>" alt="<?= get_name_without_digits($file_name) ?>" width="189" height="255">
+    <div class="MainPost_info head-container">
+        <h3><?= $post['post_name'] ?></h3>
+        <span>
+            Дата публикации <?= $post['date'] ?>
+            Количество посетителей <?= $post['visitors'] ?>
+            Рейтинг <?= $post['rating'] ?>
+        </span>
+    </div>
 
-    <?php }
-    }
-    ?>
-</div>
-<div class="файлы, которые нельзя посмотреть, но можно скачать">
-    <?php
-    foreach ($link_to_content as $file) {
-        $file_name = $file;
-        $file = path_to_file . $file;
-        echo (!is_image($file));
-        if (!is_image($file)) { ?>
-            <a href="<?= $file ?>" download=""><?= get_name_without_digits($file_name); ?></a>
-    <?php }
-    }
-    ?>
-
-</div>
-
-
-
-
-
-
-
-
-<div class="Комментарии, пока не трогай будет переделано">
-    <?php
-    if (!$coms->num_rows) {
-        echo "Комментариев ещё нет, будь первым";
-    }
-    while ($com = $coms->fetch_assoc()) {
-        $user = get_user_by_id($mysql, $post['autor_id']);
-    ?>
-
-        <ul class="forum-section_item">
-            <div class="forum-section_col-1">
-                <a href="#">
-                    <img src="<?= $user['avatar'] ?>" alt="<?= $user['avatar'] ?>">
-                </a>
+    <div class="forum-top-block">
+        <div class="Post">
+            <div class="Post_LeftCol">
+                <a class="username" href="/profile/index.php?user_id=<?= $author['id'] ?>"><?= $author['nick_name'] ?><?= $author['nick_name'] ?>
+                    <a href="/profile/index.php?user_id=<?= $author['id'] ?>">
+                        <img src="<?= path_to_avatar . $author['avatar'] ?>" alt="<?= get_name_without_digits($author['avatar']) ?>">
+                    </a>
+                    <p class="author_info">Рейтинг:<?= $author['score'] ?></p>
             </div>
-            <div class="forum-section_col-2">
-                <div class="forum-section_title">
-                    <a href="./this_post.php?post_id=<?= $post['post_id'] ?>" title="Название темы"><?= $post['post_name']; ?></a>
+            <div class="Post_RightCol">
+                <div class="Post_info"><?= $post['date'] ?></div>
+                <text><?= $post['post_text'] ?></text>
+                <div class="Post_File img">
+                    <?php
+                    //вывод изображений
+                    foreach ($link_to_content as $file) {
+                        $file_name = $file;
+                        $file = path_to_file . $file;
+                        if (is_image($file)) { ?>
+                            <img src="<?= $file ?>" alt="<?= get_name_without_digits($file_name) ?>">
+
+                    <?php }
+                    }
+                    ?>
                 </div>
-                <div class="forum-section_name">
-                    <a href="#" title="Автор темы"><?= $user['nick_name']; ?></a>
-                    <span title="Дата создания темы"><?= $post['date']; ?></span>
-                </div>
-                <!--Далее будет реализовано после добавления комментариев-->
-                <div class="forum-section_mes--mobile">
-                    <span>Сообщений: 15</span>
-                    <span>5 часов назад</span>
+                <div class="Post_File">
+                    <?php
+                    //вывод других файлов
+                    foreach ($link_to_content as $file) {
+                        $file_name = $file;
+                        $file = path_to_file . $file;
+                        if (!is_image($file)) { ?>
+                            <a href="<?= $file ?>" download=""><?= get_name_without_digits($file_name); ?></a>
+
+                    <?php }
+                    }
+                    ?>
+
                 </div>
             </div>
-            <div class="forum-section_col-3">
-                <p>Сообщений:
-                    <span>15</span>
-                </p>
-                <p>Просмотров:
-                    <span>356</span>
-                </p>
-            </div>
-        </ul>
-    <?php
-    }
-    ?>
-</div>
+        </div>
+
+
+
+        <!-- ниже блок комментариев -->
+        <?php
+        show_comments($mysql, 'post_comments', $post_id);
+        ?>
+        <br>
+        <?php
+        if (isset($_SESSION['user'])) {
+            write_comment($post_id, $_SESSION['user']['id']);
+        } else {
+        ?>
+            <form>
+                <input type="text" required name="text"><br>
+                <button type="button">Отправить</button><br>
+            </form>
+            Чтобы отправить сообщение, авторизируйтесь
+        <?php
+        }
+        ?>
+    </div>
+</body>
+
+</html>
