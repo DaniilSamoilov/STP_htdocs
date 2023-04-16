@@ -216,14 +216,15 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
                     case 'ascending':
                         break;
                 }
-                //
 
+                //запрос БД по постам
                 $sql .= $sort . " LIMIT $limit_on_page OFFSET $offset";
                 if (!$posts = $mysql->query($sql)) {
                     echo "Ошибка запроса БД";
                     exit();
                 }
-
+                //запрос БД по количеству комментариев
+                $sql = "SELECT COUNT(*) as count FROM `post_comments` WHERE `original_post` = ";
 
                 ?>
                 <ul class="forum-section_list">
@@ -232,13 +233,14 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
                         echo "Темы не найдены";
                     }
                     while ($post = $posts->fetch_assoc()) {
+                        $count_coms = $mysql->query($sql . $post['post_id'])->fetch_assoc()['count'];
                         $user = get_user_by_id($mysql, $post['autor_id']);
                     ?>
 
                         <ul class="forum-section_item">
                             <div class="forum-section_col-1">
-                                <a href="/profile/index.php?user_id=<?= $user['id']?>">
-                                    <img src="<?= path_to_avatar.$user['avatar'] ?>" alt="<?= get_name_without_digits($user['avatar']) ?>">
+                                <a href="/profile/index.php?user_id=<?= $user['id'] ?>">
+                                    <img src="<?= path_to_avatar . $user['avatar'] ?>" alt="<?= get_name_without_digits($user['avatar']) ?>">
                                 </a>
                             </div>
                             <div class="forum-section_col-2">
@@ -257,13 +259,16 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
                             </div>
                             <div class="forum-section_col-3">
                                 <p>Сообщений:
-                                    <span>15</span>
+                                    <span><?= $count_coms ?></span>
                                 </p>
                                 <p>Просмотров:
-                                    <span>356</span>
+                                    <span><?= $post['visitors'] ?></span>
                                 </p>
                             </div>
                         </ul>
+
+
+                        <!-- Пагинация -->
                     <?php
                     }
                     $url = "?";
@@ -280,7 +285,6 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
                         <a class="pagination_link" href="<?= $url ?>&page=1">
                             << </a>
                     </li>
-
                     <?php
                     if ($page == 1 and $count_pages != 1) {
                     ?>

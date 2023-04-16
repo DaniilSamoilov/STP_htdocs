@@ -1,9 +1,23 @@
 <?php
 session_start();
 
-require_once("/OSPanel/domains/site/scripts/connect_to_db.php");
-require_once("/OSPanel/domains/site/scripts/get_user_info.php");
-require_once("/OSPanel/domains/site/scripts/operations_with_files.php");
+$arr = explode('\\',dirname(__FILE__));
+$final_dir = "";
+foreach ($arr as $key => $value) {
+    if ($final_dir == "") {
+        $final_dir = $final_dir. $value;
+    }
+    else{
+    $final_dir = $final_dir. '/'. $value;
+    }
+    if ($value == "domains") {
+        break;
+    }
+}
+
+require_once($final_dir."/site/scripts/connect_to_db.php");
+require_once($final_dir."/site/scripts/get_user_info.php");
+require_once($final_dir."/site/scripts/operations_with_files.php");
 
 ?>
 
