@@ -341,11 +341,10 @@ img {
 }
 
 .Post_LeftCol img{
-    width: 75%;
-    border-radius: 100%;
-    display: block;
-    margin: 0 auto;
-    justify-content: center;
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
 }
 
 .author_info{
