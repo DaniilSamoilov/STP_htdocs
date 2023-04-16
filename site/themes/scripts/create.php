@@ -17,15 +17,18 @@ $post_text = htmlspecialchars(trim($_POST['post_text']));
 $files = $_FILES['f'];
 $path_to_file = "../../user_files/themes/";
 $link_to_content = "";
-for ($i = 0; $i < count($files['name']); $i++) {
-    $file_name = $files['name'][$i];
-    $file_name = trim($file_name, ' ');
-    $file_tmp = $files['tmp_name'][$i];
-    $file_name = $user_id . time() . $file_name;
-    $link_to_content .= $file_name . "|";
-    move_uploaded_file($file_tmp, $path_to_file . $file_name);
+if (!empty($files['name'][0])) {
+    for ($i = 0; $i < count($files['name']); $i++) {
+        $file_name = $files['name'][$i];
+        $file_name = trim($file_name, ' ');
+        $file_tmp = $files['tmp_name'][$i];
+        $file_name = $user_id . time() . $file_name;
+        $link_to_content .= $file_name . "|";
+        var_dump($link_to_content);
+        move_uploaded_file($file_tmp, $path_to_file . $file_name);
+    }
+    $link_to_content = substr($link_to_content, 0, -1);
 }
-$link_to_content = substr($link_to_content, 0, -1);
 
 $sql = "INSERT INTO `posts` (`post_id`, `autor_id`, `chapter_id`, `date`, `post_name`) VALUES (NULL, '$user_id', '$chapter_id', CURRENT_TIMESTAMP, '$post_name')";
 if (!$mysql->query($sql)) {
