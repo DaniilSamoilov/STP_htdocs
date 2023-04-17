@@ -4,7 +4,8 @@ require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
 require_once("../scripts/operations_with_files.php");
 
-$chapterid = isset($_GET['chapterid']) ? $_GET['chapterid'] : null;
+$chapterid = isset($_GET['chapterid']) && is_numeric($_GET['chapterid'])  ? $_GET['chapterid'] : null;
+$userid = isset($_GET['userid']) && is_numeric($_GET['userid'])  ? $_GET['userid'] : null;
 $search = isset($_GET['search']) ? $_GET['search'] : null;
 $search = trim($search);
 // данные для пагинации
@@ -153,6 +154,9 @@ $filter3 = isset($_GET['filter3']) && in_array($_GET['filter3'], $filter3_accept
                     }
                 } else {
                     $sql .= "1 ";
+                }
+                if($userid != null){
+                    $sql.= "AND `p`.`autor_id` = $userid ";
                 }
                 if ($search != null) {
                     $sql .= "AND (";

@@ -11,17 +11,18 @@ if (isset($_GET['post_id']) and is_numeric($_GET['post_id']) and !empty($_GET['p
     echo "Id поста не указан";
     exit();
 }
-//получение имени поста
-$sql = "SELECT `post_name` FROM `posts` WHERE `post_id` = $post_id";
-$post_name = $mysql->query($sql)->fetch_assoc()['post_name'];
 
-//запрос к БД с комментариями
+//запрос к БД с контентом
 $sql = "SELECT * FROM `post_content` `c` JOIN `posts` `p` ON `c`.`original_post` = `p`.`post_id` WHERE `original_post` = $post_id";
 if (!$post = $mysql->query($sql)) {
     echo "Ошибка запроса БД";
     exit();
 }
-$post = $post->fetch_assoc();
+if (!$post = $post->fetch_assoc()) {
+    echo "Пост с данным ID не найден";
+    exit();
+}
+$post_name = $post['post_name'];
 //Учет посетителей поста
 if ($_SESSION['user'] != $post['autor_id']) {
     $sql = "UPDATE `posts` SET `visitors`=$post[visitors] + 1 WHERE `post_id` = $post_id";
@@ -29,7 +30,7 @@ if ($_SESSION['user'] != $post['autor_id']) {
 }
 // замена символов /n на <br> в тексте поста и подготовка к выводу на страницу
 $post['post_text'] = str_replace("\n", "<br>", $post['post_text']);
-$post['post_text'] = htmlspecialchars($post['post_text'], ENT_QUOTES, 'UTF-8');
+
 //ссылка на имя прикреплённых файлов
 $link_to_content = $post['link_to_content'];
 $link_to_content = explode("|", $link_to_content);
