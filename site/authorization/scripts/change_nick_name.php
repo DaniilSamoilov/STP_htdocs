@@ -5,8 +5,8 @@ require_once "../../scripts/connect_to_db.php";
 $new_nick_name = htmlspecialchars(trim($_POST['new_nick_name']));
 $passwd = htmlspecialchars(trim($_POST['passwd']));
 
-if (!isset($_SESSION['user'])) {
-    header('Location: ../authorization');
+if (!isset($_SESSION['user']) || $_SESSION['user'] === null) {
+    header('Location: ../');
     exit();
 }
 $user_id = $_SESSION['user']['id'];

@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']['id'])){
-    $_SESSION['user']['id'] = null;
+if (!isset($_SESSION['user']) || $_SESSION['user'] === null){
+    $_SESSION['user'] = null;
 }
 if(!isset($_SESSION['visited_posts'])){
     $_SESSION['visited_posts'] = array();

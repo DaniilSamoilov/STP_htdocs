@@ -1,14 +1,15 @@
 <?php
 session_start();
 require_once "../../scripts/connect_to_db.php";
+if (!isset($_SESSION['user']) || $_SESSION['user'] === null) {
+    header('Location: ../');
+    exit();
+}
 
 $avatar = $_FILES['f'];
 const path_to_avatar = "../../user_files/users/";
 $passwd = htmlspecialchars(trim($_POST['passwd']));
-if (!isset($_SESSION['user'])) {
-    header('Location: ../authorization');
-    exit();
-}
+
 $user_id = $_SESSION['user']['id'];
 
 if ($avatar['type'] != "image/png" && $avatar['type'] != "image/jpeg" && $avatar['type'] != "image/jpg" && $avatar['type'] != "image/gif") {

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user'])) {
-  $_SESSION['user']['id'] = null;
+  $_SESSION['user'] = null;
 }
 
 require_once("../scripts/get_user_info.php");
