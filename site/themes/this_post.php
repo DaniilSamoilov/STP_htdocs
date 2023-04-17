@@ -23,12 +23,13 @@ if (!$post = $mysql->query($sql)) {
 }
 $post = $post->fetch_assoc();
 //Учет посетителей поста
-if($_SESSION['user']!=$post['autor_id']){
+if ($_SESSION['user'] != $post['autor_id']) {
     $sql = "UPDATE `posts` SET `visitors`=$post[visitors] + 1 WHERE `post_id` = $post_id";
     $mysql->query($sql);
 }
-// замена символов /n на <br> в тексте поста
+// замена символов /n на <br> в тексте поста и подготовка к выводу на страницу
 $post['post_text'] = str_replace("\n", "<br>", $post['post_text']);
+$post['post_text'] = htmlspecialchars($post['post_text'], ENT_QUOTES, 'UTF-8');
 //ссылка на имя прикреплённых файлов
 $link_to_content = $post['link_to_content'];
 $link_to_content = explode("|", $link_to_content);
@@ -47,7 +48,7 @@ $author = get_user_by_id($mysql, $post['autor_id']);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/style.css">
-    <title>«Точка общения»|<?= $post_name ?></title>
+    <title>«Точка общения»|<?= htmlspecialchars($post_name, ENT_QUOTES, 'UTF-8') ?></title>
 </head>
 <?php
 require_once("../html_components/header.php");
@@ -56,7 +57,7 @@ require_once("../html_components/header.php");
 <body>
 
     <div class="MainPost_info head-container">
-        <h3><?= $post['post_name'] ?></h3>
+        <h3><?= htmlspecialchars($post_name, ENT_QUOTES, 'UTF-8') ?></h3>
         <span>
             Дата публикации <?= $post['date'] ?>
             Количество посетителей <?= $post['visitors'] ?>
@@ -67,11 +68,11 @@ require_once("../html_components/header.php");
     <div class="forum-top-block">
         <div class="Post">
             <div class="Post_LeftCol">
-                <a class="username" href="/profile/index.php?user_id=<?= $author['id'] ?>"><?= $author['nick_name'] ?><?= $author['nick_name'] ?>
-                    <a href="/profile/index.php?user_id=<?= $author['id'] ?>">
-                        <img src="<?= path_to_avatar . $author['avatar'] ?>" alt="<?= get_name_without_digits($author['avatar']) ?>">
-                    </a>
-                    <p class="author_info">Рейтинг:<?= $author['score'] ?></p>
+                <a class="username" href="/profile/index.php?user_id=<?= $author['id'] ?>"><?= htmlspecialchars($author['nick_name'], ENT_QUOTES, 'UTF-8') ?></a>
+                <a href="/profile/index.php?user_id=<?= $author['id'] ?>">
+                    <img src="<?= path_to_avatar . $author['avatar'] ?>" alt="<?= get_name_without_digits($author['avatar']) ?>">
+                </a>
+                <p class="author_info">Рейтинг:<?= $author['score'] ?></p>
             </div>
             <div class="Post_RightCol">
                 <div class="Post_info"><?= $post['date'] ?></div>
@@ -109,11 +110,11 @@ require_once("../html_components/header.php");
             </div>
         </div>
 
-        <div class = like-dislike>
-        <button>нравится</button>
-        <button>не нравится</button>
+        <div class=like-dislike>
+            <button>нравится</button>
+            <button>не нравится</button>
         </div>
-    
+
 
         <!-- ниже блок комментариев -->
         <?php

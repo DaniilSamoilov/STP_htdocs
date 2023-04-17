@@ -8,16 +8,20 @@ $chapterid = isset($_GET['chapterid']) ? $_GET['chapterid'] : null;
 $search = isset($_GET['search']) ? $_GET['search'] : null;
 $search = trim($search);
 // данные для пагинации
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-$limit_on_page = isset($_GET['limit_on_page']) ? $_GET['limit_on_page'] : 5;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+$limit_on_page = isset($_GET['limit_on_page']) && is_numeric($_GET['limit_on_page']) ? $_GET['limit_on_page'] : 5;
 $offset = $limit_on_page * ($page - 1);
 //$count_pages количество страниц вычисляется ниже
 
-// данные фильтрации и сортировки
-$filter1 = isset($_GET['filter1']) ? $_GET['filter1'] : "all_time";
-$filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "creation-date";
-$filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
 
+//допустимые значения в переменных filter, так как они будут вставляться в запрос БД
+$filter1_accept = ["today", "week", "month", "year", "all_time"];
+$filter2_accept = ["relevance", "popularity", "creation-date"];
+$filter3_accept = ["ascending", "descending"];
+// данные фильтрации и сортировки
+$filter1 = isset($_GET['filter1']) && in_array($_GET['filter1'], $filter1_accept) ? $_GET['filter1'] : "all_time";
+$filter2 = isset($_GET['filter2']) && in_array($_GET['filter2'], $filter2_accept) ? $_GET['filter2'] : "creation-date";
+$filter3 = isset($_GET['filter3']) && in_array($_GET['filter3'], $filter3_accept) ? $_GET['filter3'] : "descending";
 ?>
 
 <!DOCTYPE html>
@@ -132,10 +136,6 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
             </div>
         </div>
 
-        <?php
-
-        ?>
-
 
         <div class="head-container">Результаты поиска</div>
         <div class="forum-top-block">
@@ -245,16 +245,15 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
                             </div>
                             <div class="forum-section_col-2">
                                 <div class="forum-section_title">
-                                    <a href="./this_post.php?post_id=<?= $post['post_id'] ?>" title="Название темы"><?= $post['post_name']; ?></a>
+                                    <a href="./this_post.php?post_id=<?= $post['post_id'] ?>" title="Название темы"><?= htmlspecialchars($post['post_name'], ENT_QUOTES, 'UTF-8'); ?></a>
                                 </div>
                                 <div class="forum-section_name">
-                                    <a href="#" title="Автор темы"><?= $user['nick_name']; ?></a>
+                                    <a href="#" title="Автор темы"><?= htmlspecialchars($user['nick_name'], ENT_QUOTES, 'UTF-8'); ?></a>
                                     <span title="Дата создания темы"><?= $post['date']; ?></span>
                                 </div>
-                                <!--Далее будет реализовано после добавления комментариев-->
                                 <div class="forum-section_mes--mobile">
-                                    <span>Сообщений: 15</span>
-                                    <span>5 часов назад</span>
+                                    <span>Сообщений: <?= $count_coms ?></span>
+                                    <span>Просмотров: <?= $post['visitors'] ?></span>
                                 </div>
                             </div>
                             <div class="forum-section_col-3">
@@ -266,11 +265,11 @@ $filter3 = isset($_GET['filter3']) ? $_GET['filter3'] : "descending";
                                 </p>
                             </div>
                         </ul>
-
-
-                        <!-- Пагинация -->
                     <?php
                     }
+                    ?>
+                    <!-- Пагинация -->
+                    <?php
                     $url = "?";
                     $url .= $filter1 != "all_time" ? "filter1=" . $filter1 : "";
                     $url .= $filter2 != "creation-date" ? "&filter2" . $filter2 : "";

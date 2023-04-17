@@ -20,7 +20,7 @@ require_once("./scripts/connect_to_db.php")
 
 <body>
     <div><!--Тут разелы тем-->
-        темы<br>
+        Темы<br>
         <table>
             <?php
             $sql = "SELECT * FROM `chapters`";
@@ -45,7 +45,7 @@ require_once("./scripts/connect_to_db.php")
                     </dev>
 
                     <dev class=second_info>
-                        <td>Последняя тема: <a href="./themes/this_post.php?post_id=<?= $last_post['post_id'] ?>"><?= $last_post['post_name'] ?> </a> </td>
+                        <td>Последняя тема: <a href="./themes/this_post.php?post_id=<?= $last_post['post_id'] ?>"><?= htmlspecialchars($last_post['post_name'], ENT_QUOTES, 'UTF-8') ?> </a> </td>
                         <td>Количество тем: <?= $posts->num_rows ?> </td>
                         </tr>
                     </dev>
