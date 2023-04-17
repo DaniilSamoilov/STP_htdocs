@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!isset($_SESSION['user'])) {
+  $_SESSION['user']['id'] = null;
+}
 
 require_once("../scripts/get_user_info.php");
 require_once("../scripts/connect_to_db.php");
@@ -7,7 +10,6 @@ require_once("../scripts/operations_with_files.php");
 
 $searched_id = isset($_GET['user_id']) && is_numeric($_GET['user_id']) ? $_GET['user_id'] : null;
 
-$user = get_user_by_id($mysql,  $_SESSION['user']['id']);
 ?>
 
 
@@ -31,6 +33,7 @@ $user = get_user_by_id($mysql,  $_SESSION['user']['id']);
       header('Location: /authorization');
       exit();
     }
+
     $user = get_user_by_id($mysql,  $_SESSION['user']['id']);
   ?>
     <div>

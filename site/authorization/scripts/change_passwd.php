@@ -6,6 +6,10 @@ $prev_passwd = htmlspecialchars(trim($_POST['previous_passwd']));
 $new_passwd = htmlspecialchars(trim($_POST['new_passwd']));
 $conf_passwd = htmlspecialchars(trim($_POST['conf_passwd']));
 
+if (!isset($_SESSION['user'])) {
+    header('Location: ../authorization');
+    exit();
+}
 $user_id = $_SESSION['user']['id'];
 $sql = "SELECT * FROM `users` WHERE `id` = '$user_id'";
 
