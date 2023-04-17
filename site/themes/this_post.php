@@ -1,5 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION['user']['id'])){
+    $_SESSION['user']['id'] = null;
+}
+if(!isset($_SESSION['visited_posts'])){
+    $_SESSION['visited_posts'] = array();
+}
+
 require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
 require_once("../scripts/operations_with_files.php");
@@ -25,8 +32,12 @@ if (!$post = $post->fetch_assoc()) {
 $post_name = $post['post_name'];
 //Учет посетителей поста
 if ($_SESSION['user'] != $post['autor_id']) {
-    $sql = "UPDATE `posts` SET `visitors`=$post[visitors] + 1 WHERE `post_id` = $post_id";
-    $mysql->query($sql);
+    //переменная сессии, с почещенными постами
+    if (!in_array($post_id, $_SESSION['visited_posts'])) {
+        $_SESSION['visited_posts'][] = $post_id;
+        $sql = "UPDATE `posts` SET `visitors`= $post[visitors] + 1 WHERE `post_id` = $post_id";
+        $mysql->query($sql);
+    }
 }
 // замена символов /n на <br> в тексте поста и подготовка к выводу на страницу
 $post['post_text'] = str_replace("\n", "<br>", $post['post_text']);
