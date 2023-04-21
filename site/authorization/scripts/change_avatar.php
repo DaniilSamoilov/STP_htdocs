@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once "../../scripts/connect_to_db.php";
-if (!isset($_SESSION['user']) || $_SESSION['user'] === null) {
+if (!isset($_SESSION['user'])) {
     header('Location: ../');
     exit();
 }

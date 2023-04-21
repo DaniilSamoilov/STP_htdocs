@@ -6,7 +6,7 @@ $prev_passwd = htmlspecialchars(trim($_POST['previous_passwd']));
 $new_passwd = htmlspecialchars(trim($_POST['new_passwd']));
 $conf_passwd = htmlspecialchars(trim($_POST['conf_passwd']));
 
-if (!isset($_SESSION['user']) || $_SESSION['user'] === null) {
+if (!isset($_SESSION['user'])) {
     header('Location: ../');
     exit();
 }

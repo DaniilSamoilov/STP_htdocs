@@ -28,7 +28,7 @@ $searched_id = isset($_GET['user_id']) && is_numeric($_GET['user_id']) ? $_GET['
 
 <body>
   <?php
-  if ($searched_id === null || $searched_id == $_SESSION['user']['id']) {
+  if ($searched_id === null || !isset($_SESSION['user']) || $searched_id == $_SESSION['user']['id']) {
     if (!isset($_SESSION['user'])) {
       header('Location: /authorization');
       exit();
@@ -38,7 +38,7 @@ $searched_id = isset($_GET['user_id']) && is_numeric($_GET['user_id']) ? $_GET['
   ?>
     <div>
       <a>Профиль пользователя</a>
-      <a href="../themes/?userid=<?= $user['id'] ?>">Посты пользователя</a>
+      <a href="../themes/?userid=<?= $user['id'] ?>">Мои посты</a>
     </div>
     <div align="center">
       Профиль

@@ -44,7 +44,7 @@ function show_comment_html($com, $post_id, $user)
     </div>
     <div class=Answer-to-comment>
         <?php
-        if (isset($_SESSION['user']) || $_SESSION['user'] !== null) {
+        if (isset($_SESSION['user'])) {
             write_comment($post_id, $_SESSION['user']['id'], $com['comment_id']);
         } else {
         ?>

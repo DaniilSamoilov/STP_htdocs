@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']) || $_SESSION['user'] === null) {
+if (!isset($_SESSION['user'])) {
     header('Location: /authorization');
     exit();
 }

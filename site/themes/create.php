@@ -2,7 +2,7 @@
 session_start();
 require_once("../scripts/connect_to_db.php");
 
-if (!isset($_SESSION['user']) || $_SESSION['user'] === null) {
+if (!isset($_SESSION['user'])) {
     $_SESSION['message'] = "Создавать темы могут только авторизованные пользователи";
     header('Location: ../authorization');
     exit();
