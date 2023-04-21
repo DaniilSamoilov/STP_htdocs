@@ -374,3 +374,32 @@ img {
     max-width: 300px;
     height: auto;
 }
+
+/* Кнопка лайк */
+
+.likeButton {
+    display: flex;
+    font-size: 16px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .likeButton img{
+    filter: brightness(2);
+    margin-right: 5px;
+    height: 18px;
+    width: auto;
+  }
+  
+  .likeButton.activated {
+    background-color: #0076d1;
+    color: #ffffff;
+    border-color: #0076d1;
+  }
+  
+  .likeButton.activated img{
+    filter: brightness(0) invert(1);
+  }
