@@ -57,7 +57,6 @@ require_once("./scripts/connect_to_db.php")
         </table>
 
         <a href="/themes/create.php">Создать тему</a>
-        <a href="">Мои темы</a>
 
     </div>
 </body>

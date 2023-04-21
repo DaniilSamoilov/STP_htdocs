@@ -1,5 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION['user'])) {
+    $_SESSION['user'] = null;
+}
+if (!isset($_SESSION['visited_posts'])) {
+    $_SESSION['visited_posts'] = array();
+}
+
 require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
 require_once("../scripts/operations_with_files.php");
@@ -11,25 +18,30 @@ if (isset($_GET['post_id']) and is_numeric($_GET['post_id']) and !empty($_GET['p
     echo "Id поста не указан";
     exit();
 }
-//получение имени поста
-$sql = "SELECT `post_name` FROM `posts` WHERE `post_id` = $post_id";
-$post_name = $mysql->query($sql)->fetch_assoc()['post_name'];
 
-//запрос к БД с комментариями
+//запрос к БД с контентом
 $sql = "SELECT * FROM `post_content` `c` JOIN `posts` `p` ON `c`.`original_post` = `p`.`post_id` WHERE `original_post` = $post_id";
 if (!$post = $mysql->query($sql)) {
     echo "Ошибка запроса БД";
     exit();
 }
-$post = $post->fetch_assoc();
+if (!$post = $post->fetch_assoc()) {
+    echo "Пост с данным ID не найден";
+    exit();
+}
+$post_name = $post['post_name'];
 //Учет посетителей поста
 if ($_SESSION['user'] != $post['autor_id']) {
-    $sql = "UPDATE `posts` SET `visitors`=$post[visitors] + 1 WHERE `post_id` = $post_id";
-    $mysql->query($sql);
+    //переменная сессии, с почещенными постами
+    if (!in_array($post_id, $_SESSION['visited_posts'])) {
+        $_SESSION['visited_posts'][] = $post_id;
+        $sql = "UPDATE `posts` SET `visitors`= $post[visitors] + 1 WHERE `post_id` = $post_id";
+        $mysql->query($sql);
+    }
 }
 // замена символов /n на <br> в тексте поста и подготовка к выводу на страницу
 $post['post_text'] = str_replace("\n", "<br>", $post['post_text']);
-$post['post_text'] = htmlspecialchars($post['post_text'], ENT_QUOTES, 'UTF-8');
+
 //ссылка на имя прикреплённых файлов
 $link_to_content = $post['link_to_content'];
 $link_to_content = explode("|", $link_to_content);
@@ -49,6 +61,7 @@ $author = get_user_by_id($mysql, $post['autor_id']);
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/style.css">
     <title>«Точка общения»|<?= htmlspecialchars($post_name, ENT_QUOTES, 'UTF-8') ?></title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 </head>
 <?php
 require_once("../html_components/header.php");
@@ -109,32 +122,76 @@ require_once("../html_components/header.php");
                 </div>
             </div>
         </div>
-
-        <div class=like-dislike>
-            <button>нравится</button>
-            <button>не нравится</button>
-        </div>
+    </div>
 
 
-        <!-- ниже блок комментариев -->
+    <div class=like>
         <?php
-        show_comments($mysql, 'post_comments', $post_id);
-        ?>
-        <br>
-        <?php
-        if (isset($_SESSION['user'])) {
-            write_comment($post_id, $_SESSION['user']['id']);
+        if (!isset($_SESSION['user'])) {
+            echo "Ставить оценку могут только авторизованные пользователи";
         } else {
         ?>
-            <form>
-                <input type="text" required name="text"><br>
-                <button type="button">Отправить</button><br>
-            </form>
-            Чтобы отправить сообщение, авторизируйтесь
-        <?php
-        }
-        ?>
+            <button class="likeButton">нравится</button>
     </div>
+<?php } ?>
+
+
+<!-- ниже блок комментариев -->
+<div class="forum-top-block">
+    <?php
+    show_comments($mysql, 'post_comments', $post_id);
+    ?>
+    <br>
+    <?php
+    if (isset($_SESSION['user'])) {
+        write_comment($post_id, $_SESSION['user']['id']);
+    } else {
+    ?>
+        <form>
+            <input type="text" required name="text"><br>
+            <button type="button">Отправить</button><br>
+        </form>
+        Чтобы отправить сообщение, авторизируйтесь
+    <?php
+    }
+    ?>
+</div>
+
+<script>
+    $.ajax({
+            method: "POST",
+            url: "./scripts/button_like_processing.php",
+            data: {
+                user_id: <?= $_SESSION['user']['id'] ?>,
+                post_id: <?= $post_id ?>,
+                action: "check"
+            },
+        })
+        .done(function(msg) {
+            if (msg == "SUCCESS: 1")
+                $("button.likeButton").addClass("activated");
+            else
+                $("button.likeButton").removeClass("activated");
+        })
+
+    $(document).ready(function() {
+        $("button.likeButton").on("click", function() {
+            $.ajax({
+                    method: "POST",
+                    url: "./scripts/button_like_processing.php",
+                    data: {
+                        user_id: <?= $_SESSION['user']['id'] ?>,
+                        post_id: <?= $post_id ?>,
+                        action: "toggle"
+                    },
+                })
+                .done(function(msg) {
+                    if (msg == "SUCCESS")
+                        $("button.likeButton").toggleClass("activated");
+                })
+        });
+    });
+</script>
 </body>
 
 </html>
