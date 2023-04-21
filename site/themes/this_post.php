@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']) || $_SESSION['user'] === null){
+if (!isset($_SESSION['user'])) {
     $_SESSION['user'] = null;
 }
-if(!isset($_SESSION['visited_posts'])){
+if (!isset($_SESSION['visited_posts'])) {
     $_SESSION['visited_posts'] = array();
 }
 
@@ -61,6 +61,7 @@ $author = get_user_by_id($mysql, $post['autor_id']);
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/style.css">
     <title>«Точка общения»|<?= htmlspecialchars($post_name, ENT_QUOTES, 'UTF-8') ?></title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 </head>
 <?php
 require_once("../html_components/header.php");
@@ -121,32 +122,76 @@ require_once("../html_components/header.php");
                 </div>
             </div>
         </div>
-
-        <div class=like-dislike>
-            <button>нравится</button>
-            <button>не нравится</button>
-        </div>
+    </div>
 
 
-        <!-- ниже блок комментариев -->
+    <div class=like>
         <?php
-        show_comments($mysql, 'post_comments', $post_id);
-        ?>
-        <br>
-        <?php
-        if (isset($_SESSION['user'])) {
-            write_comment($post_id, $_SESSION['user']['id']);
+        if (!isset($_SESSION['user'])) {
+            echo "Ставить оценку могут только авторизованные пользователи";
         } else {
         ?>
-            <form>
-                <input type="text" required name="text"><br>
-                <button type="button">Отправить</button><br>
-            </form>
-            Чтобы отправить сообщение, авторизируйтесь
-        <?php
-        }
-        ?>
+            <button class="likeButton">нравится</button>
     </div>
+<?php } ?>
+
+
+<!-- ниже блок комментариев -->
+<div class="forum-top-block">
+    <?php
+    show_comments($mysql, 'post_comments', $post_id);
+    ?>
+    <br>
+    <?php
+    if (isset($_SESSION['user'])) {
+        write_comment($post_id, $_SESSION['user']['id']);
+    } else {
+    ?>
+        <form>
+            <input type="text" required name="text"><br>
+            <button type="button">Отправить</button><br>
+        </form>
+        Чтобы отправить сообщение, авторизируйтесь
+    <?php
+    }
+    ?>
+</div>
+
+<script>
+    $.ajax({
+            method: "POST",
+            url: "./scripts/button_like_processing.php",
+            data: {
+                user_id: <?= $_SESSION['user']['id'] ?>,
+                post_id: <?= $post_id ?>,
+                action: "check"
+            },
+        })
+        .done(function(msg) {
+            if (msg == "SUCCESS: 1")
+                $("button.likeButton").addClass("activated");
+            else
+                $("button.likeButton").removeClass("activated");
+        })
+
+    $(document).ready(function() {
+        $("button.likeButton").on("click", function() {
+            $.ajax({
+                    method: "POST",
+                    url: "./scripts/button_like_processing.php",
+                    data: {
+                        user_id: <?= $_SESSION['user']['id'] ?>,
+                        post_id: <?= $post_id ?>,
+                        action: "toggle"
+                    },
+                })
+                .done(function(msg) {
+                    if (msg == "SUCCESS")
+                        $("button.likeButton").toggleClass("activated");
+                })
+        });
+    });
+</script>
 </body>
 
 </html>
