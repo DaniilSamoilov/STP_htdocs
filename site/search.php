@@ -2,18 +2,22 @@
 session_start();
 require_once("./scripts/connect_to_db.php");
 require_once("./scripts/get_user_info.php");
+require_once("./scripts/operations_with_files.php");
 
 $search = isset($_GET['search']) ? $_GET['search'] : null;
 $search = trim($search);
 // данные для пагинации
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-$limit_on_page = isset($_GET['limit_on_page']) ? $_GET['limit_on_page'] : 5;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+$limit_on_page = isset($_GET['limit_on_page']) && is_numeric($_GET['limit_on_page']) ? $_GET['limit_on_page'] : 5;
 $offset = $limit_on_page * ($page - 1);
 //$count_pages количество страниц вычисляется ниже
 
+//допустимые значения в переменных filter, так как они будут вставляться в запрос БД
+$filter1_accept = ["abc", "point"];
+$filter2_accept = ["ascending", "descending"];
 // данные фильтрации и сортировки
-$filter1 = isset($_GET['filter1']) ? $_GET['filter1'] : "abc";
-$filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "descending";
+$filter1 = isset($_GET['filter1']) && in_array($_GET['filter1'], $filter1_accept) ? $_GET['filter1'] : "abc";
+$filter2 = isset($_GET['filter2']) && in_array($_GET['filter2'], $filter2_accept) ? $_GET['filter2'] : "descending";
 
 
 ?>
@@ -158,18 +162,20 @@ $filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "descending";
 
                         <ul class="forum-section_item">
                             <div class="forum-section_col-1">
-                                <a href="#">
-                                    <img src="<?= $user['avatar'] ?>" alt="<?= $user['avatar'] ?>">
+                                <a href="/profile/index.php?user_id=<?= $user['id'] ?>">
+                                    <img src="<?= path_to_avatar . $user['avatar'] ?>" alt="<?= get_name_without_digits($user['avatar']) ?>">
                                 </a>
                             </div>
                             <div class="forum-section_title">
                                 <div class="forum-section_name">
-                                    <a href="#" title="Пользователь"><?= $user['nick_name']; ?></a>
+                                    <a href="/profile/index.php?user_id=<?= $user['id'] ?>" title="Пользователь"><?= htmlspecialchars($user['nick_name'], ENT_QUOTES, 'UTF-8'); ?></a>
                                     Очки:
                                     <span title="Очки"><?= $user['score']; ?></span>
                                 </div>
                             </div>
                         </ul>
+
+
                     <?php
                     }
                     $url = "?";
@@ -179,7 +185,6 @@ $filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "descending";
                     $url .= $search != null ? "&search=" . $search : "";
                     ?>
                 </ul>
-            </ul>
                 <ul class="pagination">
                     <li class="pagination_item">
                         <a class="pagination_link" href="<?= $url ?>&page=1">
@@ -237,6 +242,7 @@ $filter2 = isset($_GET['filter2']) ? $_GET['filter2'] : "descending";
                     </li>
                 </ul>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
 </body>
 
 </html>

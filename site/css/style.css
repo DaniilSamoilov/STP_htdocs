@@ -341,11 +341,10 @@ img {
 }
 
 .Post_LeftCol img{
-    width: 75%;
-    border-radius: 100%;
-    display: block;
-    margin: 0 auto;
-    justify-content: center;
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
 }
 
 .author_info{
@@ -375,3 +374,32 @@ img {
     max-width: 300px;
     height: auto;
 }
+
+/* Кнопка лайк */
+
+.likeButton {
+    display: flex;
+    font-size: 16px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .likeButton img{
+    filter: brightness(2);
+    margin-right: 5px;
+    height: 18px;
+    width: auto;
+  }
+  
+  .likeButton.activated {
+    background-color: #0076d1;
+    color: #ffffff;
+    border-color: #0076d1;
+  }
+  
+  .likeButton.activated img{
+    filter: brightness(0) invert(1);
+  }

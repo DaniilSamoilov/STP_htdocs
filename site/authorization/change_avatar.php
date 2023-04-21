@@ -1,7 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION['user'])) {
+  header('Location: /authorization');
+  exit();
+}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,23 +20,20 @@ session_start();
 <?php include("../html_components/header.php"); ?>
 
 <body>
-  <div align="center">
-    Регистрация
-    <form action="scripts/register.php" method="post">
-      <input type="text" name="login" placeholder="Введите логин (4-22 символа)" required pattern=".{4,22}"><br>
-      <input type="text" name="nick_name" placeholder="Введите nick name" required><br>
-      <input type="password" name="passwd" placeholder="Введите пароль (6-20 символов)" required pattern=".{6,20}"><br>
-      <input type="password" name="conf_passwd" placeholder="Подтвердите пароль"><br>
+  <div>
+    <form action="scripts\change_avatar.php" method="POST" enctype="multipart/form-data">
+      Смена аватара<br>
+      <input type="file" name="f"><br>
+      <input type="password" name="passwd" placeholder="пароль" required pattern=".{6,20}"><br>
 
       <?php
-      //cообщение берется из файла php/register.php в случае совпадения данных, с уже имеющимися в БД
       if (isset($_SESSION['message'])) {
         echo "<p>" . $_SESSION['message'] . "</p>";
         unset($_SESSION['message']);
       }
       ?>
 
-      <button type="submit" name="button">Подтвердить регистрацию</button><br>
+      <button type="submit" name="button">Подтвердить</button><br>
     </form>
   </div>
 </body>
