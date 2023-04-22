@@ -60,18 +60,14 @@ $searched_id = isset($_GET['user_id']) && is_numeric($_GET['user_id']) ? $_GET['
         <h2>Почта: <?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?>(В разработке)</h2><!--Почта врятли когда-либо будет реализована-->
       </div>
 
-      <?php
-      if (isset($_SESSION['message'])) {
-        echo "<p>" . $_SESSION['message'] . "</p>";
-        unset($_SESSION['message']);
-      }
-      ?>
-
-
       <button onclick="window.location.href = '/authorization/change_passwd.php';">Смена пароля</button>
 
+      <div>
+        <a href="chat.php?user_id=<?= $user['id'] ?>">Заметки</a>
+      </div>
 
       <br><button onclick="window.location.href = '/authorization/scripts/logout.php';">Выйти из аккаунта</button>
+
     </div>
   <?php
   } else {
@@ -96,8 +92,17 @@ $searched_id = isset($_GET['user_id']) && is_numeric($_GET['user_id']) ? $_GET['
       <div>
         <h2>Почта: <?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?>(В разработке)</h2><!--Почта врятли когда-либо будет реализована-->
       </div>
+
+      <div>
+        <a href="chat.php?user_id=<?= $user['id'] ?>">Написать сообщение</a>
+      </div>
     <?php
-  } ?>
+  }
+  if (isset($_SESSION['message'])) {
+    echo "<p>" . $_SESSION['message'] . "</p>";
+    unset($_SESSION['message']);
+  }
+    ?>
 </body>
 
 </html>
