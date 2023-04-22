@@ -49,3 +49,10 @@ if ($action == "toggle") {
         echo "SUCCESS";
     }
 }
+//подсчёт количества лайков поста
+$sql = "SELECT COUNT(*) as count FROM `likes` WHERE `post` = $post_id";
+if($res = $mysql->query($sql)){
+    $count = $res->fetch_assoc()['count'];
+    $sql = "UPDATE `posts` SET `rating`='$count' WHERE `post_id` = '$post_id'";
+    $mysql ->query($sql);
+}
