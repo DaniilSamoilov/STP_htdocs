@@ -65,6 +65,7 @@
                 .done(function(data) {
                     if (data == "NOT LOGIN") {
                         $('div.minichat-input > input[type=text]').attr('placeholder', 'Авторизируйтесь');
+                        $('div.minichat-input > input[type=text]').val('');
                         setTimeout(() => {
                             $('div.minichat-input > input[type=text]').attr('placeholder', 'Напишите сообщение...');
                         }, 3000);
