@@ -10,7 +10,7 @@ if (!isset($_SESSION['visited_posts'])) {
 require_once("../scripts/connect_to_db.php");
 require_once("../scripts/get_user_info.php");
 require_once("../scripts/operations_with_files.php");
-require_once("../scripts/comments_under_post.php");
+require_once("../html_components/comments_under_post.php");
 
 if (isset($_GET['post_id']) and is_numeric($_GET['post_id']) and !empty($_GET['post_id'])) {
     $post_id = $_GET['post_id'];
@@ -124,15 +124,13 @@ require_once("../html_components/header.php");
         </div>
     </div>
 
-
-    <div class=like>
+<!-- Кнопка лайка -->
         <?php
         if (!isset($_SESSION['user'])) {
             echo "Ставить оценку могут только авторизованные пользователи";
         } else {
         ?>
-            <button class="likeButton">нравится</button>
-    </div>
+            <button class="likeButton"><img src="Like.png" alt="Like">Нравится</button>
 <?php } ?>
 
 
