@@ -1,10 +1,6 @@
 <?php
-require_once("../scripts/connect_to_db.php");
-require_once("../scripts/get_user_info.php");
-
-// максимальное количество записей в таблице БД с сообщениями
-$limit_count_messages= 100;
-
+require_once("../../scripts/connect_to_db.php");
+require_once("../../scripts/get_user_info.php");
 
 if (!isset($_POST['action'])) {
     echo "FAIL";
@@ -12,8 +8,20 @@ if (!isset($_POST['action'])) {
 }
 $action = $_POST['action'];
 
+if (!isset($_POST['to_who'])) {
+    echo "FAIL";
+    exit();
+}
+$to_who = $_POST['to_who'];
+
+if (!isset($_SESSION['user']['id'])) {
+    echo "NOT LOGIN";
+    exit();
+}
+$from_who = $_SESSION['user']['id'];
+
 if ($action == "get") {
-    $sql = "SELECT * FROM `live_chat` WHERE 1 ORDER BY `message_time`";
+    $sql = "SELECT * FROM `personal messages` WHERE `to_who` = $to_who AND `from_who` = $from_who OR `to_who` = $from_who AND `from_who` = $to_who ORDER BY `message_time`";
     if (!$result = $mysql->query($sql)) {
         echo "FAIL";
         exit();
@@ -25,9 +33,10 @@ if ($action == "get") {
     while ($mesage = $result->fetch_assoc()) {
 
         //защита от пользовательского ввода
-        $mesage['message'] = htmlspecialchars($mesage['message'], ENT_QUOTES, 'UTF-8');
+        $mesage['text_message'] = htmlspecialchars($mesage['text_message'], ENT_QUOTES, 'UTF-8');
         //замена эллемента массива с id на поле с всеми данными пользователя
-        $mesage = array_replace($mesage, array('message_sender_id' => get_user_by_id($mysql, $mesage['message_sender_id'])));
+        $mesage = array_replace($mesage, array('to_who' => get_user_by_id($mysql, $mesage['to_who'])));
+        $mesage = array_replace($mesage, array('from_who' => get_user_by_id($mysql, $mesage['from_who'])));
 
         $mesages[] = $mesage;
     }
@@ -53,9 +62,8 @@ if ($action == "send") {
         exit();
     }
 
-    $sql = "INSERT INTO `live_chat`(`message_sender_id`, `message`) VALUES ($user_id, '$text')";
-    $sql2 = "DELETE FROM `live_chat` WHERE `message_time` < (SELECT * FROM (SELECT`message_time` FROM `live_chat` ORDER BY `message_time` DESC LIMIT $limit_count_messages) as T ORDER BY `message_time` LIMIT 1)";
-    if ($mysql->query($sql) && $mysql->query($sql2))
+    $sql = "INSERT INTO `personal messages`(`to_who`, `from_who`, `text_message`) VALUES ($to_who, $from_who, '$text')";
+    if ($mysql->query($sql))
         echo "SUCCESS";
     else
         echo "FAIL";
