@@ -69,9 +69,9 @@ if (!isset($_SESSION['user'])) {
                 .done(function(data) {
                     $(".minichat-message-box .minichat-message").remove();
                     if (data == "FAIL") {
-                        $(".minichat-message-box").append('<span class="minichat-message-text">Ошибка сервера</span>');
+                        $(".minichat-message-box").append('<span class="minichat-message-text">Ошибка сервера</span><b>');
                     } else if (data == "EMPTY DB") {
-                        $(".minichat-message-box").append('<span class="minichat-message-text">Сообщений нет</span>');
+                        $(".minichat-message-box").html('<span class="minichat-message-text">Сообщений нет</span>');
                     } else {
                         messages = JSON.parse(data);
                         messages.forEach(element => {
@@ -102,7 +102,6 @@ if (!isset($_SESSION['user'])) {
                     },
                 })
                 .done(function(data) {
-                    console.log(data);
                     if (data == "NOT LOGIN") {
                         $('div.minichat-input > input[type=text]').attr('placeholder', 'Авторизируйтесь');
                         $('div.minichat-input > input[type=text]').val('');
