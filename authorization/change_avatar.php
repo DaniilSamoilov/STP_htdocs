@@ -20,22 +20,30 @@ if (!isset($_SESSION['user'])) {
 <?php include("../html_components/header.php"); ?>
 
 <body>
-  <div>
-    <form action="scripts\change_avatar.php" method="POST" enctype="multipart/form-data">
-      Смена аватара<br>
-      <input type="file" name="f"><br>
-      <input type="password" name="passwd" placeholder="пароль" required pattern=".{6,20}"><br>
-
-      <?php
-      if (isset($_SESSION['message'])) {
-        echo "<p>" . $_SESSION['message'] . "</p>";
-        unset($_SESSION['message']);
-      }
-      ?>
-
-      <button type="submit" name="button">Подтвердить</button><br>
-    </form>
-  </div>
+  <div class="container_body">
+      <h1 class="logo_text text_center">Смена аватара</h1>
+      <div class="div_form text_center">
+          <form action="scripts\change_avatar.php" method="POST" enctype="multipart/form-data">
+              <div >
+              <input type="file" class= "form" name="f">
+              </div>
+              <div>
+              <input class="form password" type="password" name="passwd" placeholder="пароль" required pattern=".{6,20}">
+              </div>
+              <div>
+                <input class="form submit" type="submit" name="button" value="Подтвердить">
+            </div>
+          </form>
+          <?php
+            if (isset($_SESSION['message'])) {
+                echo "<p>" . $_SESSION['message'] . "</p>";
+                unset($_SESSION['message']);
+            }
+            ?>
+      </div>
 </body>
+<style>
+    @import url("../css/registration_form.css");
+</style>
 
 </html>

@@ -16,7 +16,7 @@ session_start();
 <?php include("../html_components/header.php"); ?>
 
 <body>
-  <div class="reg_body">
+  <div class="container_body">
     <h1 class="logo_text text_center">Регистрация</h1>
     <div class="div_form text_center">
         <form action="scripts/register.php" method="post" enctype="multipart/form-data">

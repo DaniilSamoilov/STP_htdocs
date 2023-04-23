@@ -20,7 +20,7 @@ if (isset($_SESSION['user'])) {
 <?php include("../html_components/header.php"); ?>
 
 <body>
-  <div class="author_body">
+  <div class="container_body">
       <h1 class="logo_text text_center">Авторизация</h1>
       <div class="div_form text_center">
           <form action="scripts/check_authorization.php"  method="post">

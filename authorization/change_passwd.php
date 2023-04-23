@@ -19,23 +19,32 @@ if (!isset($_SESSION['user'])) {
 <?php include("../html_components/header.php"); ?>
 
 <body>
-    <div>
-        <form action="scripts\change_passwd.php" method="POST">
-            Смена пароля<br>
-            <input type="text" placeholder="старый пароль" name="previous_passwd"><br>
-            <input type="password" name="new_passwd" placeholder="новый пароль" required pattern=".{6,20}">6-20 символов<br>
-            <input type="password" name="conf_passwd" placeholder="Подтвердите новый пароль" required><br>
-
-            <?php
+    <div class="container_body">
+      <h1 class="logo_text text_center">Смена пароля</h1>
+      <div class="div_form text_center">
+          <form action="scripts\change_passwd.php" method="POST">
+              <div >
+              <input type="text" placeholder="старый пароль" name="previous_passwd">
+              </div>
+              <div>
+              <input type="password" class= "form" name="new_passwd" placeholder="новый пароль" required pattern=".{6,20}">6-20 символов<br>
+              </div>
+              <div>
+              <input type="password" class= "form" name="conf_passwd" placeholder="Подтвердите новый пароль" required>
+              </div>
+              <div>
+                <input class="form submit" type="submit" name="button" value="Изменить пароль">
+            </div>
+          </form>
+          <?php
             if (isset($_SESSION['message'])) {
                 echo "<p>" . $_SESSION['message'] . "</p>";
                 unset($_SESSION['message']);
             }
             ?>
-
-            <button type="submit" name="button">Подтвердить</button><br>
-        </form>
-    </div>
+      </div>
 </body>
-
+<style>
+    @import url("../css/registration_form.css");
+</style>
 </html>
