@@ -19,23 +19,37 @@ if (!isset($_SESSION['user'])) {
 <?php include("../html_components/header.php"); ?>
 
 <body>
-    <div>
-        <form action="scripts\change_passwd.php" method="POST">
-            Смена пароля<br>
-            <input type="text" placeholder="старый пароль" name="previous_passwd"><br>
-            <input type="password" name="new_passwd" placeholder="новый пароль" required pattern=".{6,20}">6-20 символов<br>
-            <input type="password" name="conf_passwd" placeholder="Подтвердите новый пароль" required><br>
+    <div class="author_body">
+        <h1 class="logo_text text_center">Смена пароля</h1>
+        <div class="div_form text_center">
+            <form action="scripts\change_passwd.php" method="POST">
+                <div>
+                    <input class="form previous_passwd" type="text" placeholder="Старый пароль" name="previous_passwd">
+                </div>
+                <div>
+                    <input class="form new_passwd" type="password" name="new_passwd" placeholder="Новый пароль (6-20 символов)" required pattern=".{6,20}">
+                </div>
+                <div>
+                    <input class="form conf_passwd" type="password" name="conf_passwd" placeholder="Подтвердите новый пароль" required>
+                </div>
+                <div>
+                    <input class="form submit" name="button" value="Подтвердить" type="submit">
+                </div>
+                
+                <?php
+                if (isset($_SESSION['message'])) {
+                    echo "<p>" . $_SESSION['message'] . "</p>";
+                    unset($_SESSION['message']);
+                }
+                ?>
 
-            <?php
-            if (isset($_SESSION['message'])) {
-                echo "<p>" . $_SESSION['message'] . "</p>";
-                unset($_SESSION['message']);
-            }
-            ?>
-
-            <button type="submit" name="button">Подтвердить</button><br>
-        </form>
+            </form>
+        </div>
     </div>
 </body>
+
+<style>
+    @import url("../css/registration_form.css");
+</style>
 
 </html>
