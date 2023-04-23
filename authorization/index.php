@@ -35,7 +35,7 @@ if (isset($_SESSION['user'])) {
               </div>
           </form>
           <button class="half_button form" onclick="window.location.href = 'register.php';">Зарегистрироваться</button>
-          <button class="half_button form" onclick="window.location.href = 'change_passwd.php';">Забыли пароль</button>
+          <button class="half_button form" onclick="window.location.href = 'forgot_passwd.php';">Забыли пароль</button>
       </div>
       <p class="logo_login text_center">
           Если нет аккаунта
