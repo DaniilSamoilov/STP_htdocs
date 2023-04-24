@@ -1,0 +1,108 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background-color: #1d375ff2;
+}
+
+.text_center {
+    text-align: center;
+}
+
+.container_body {
+    margin: 0 auto;
+    padding: 0 16px;
+    width: 38%;
+}
+
+.logo_text {
+    margin-top: 70px;
+    margin-bottom: 30px;
+    color: #ffffff;
+    font-family: sans-serif;
+}
+
+.div_form {
+    margin: auto auto;
+    height: auto;
+    background-color: rgba(28, 45, 71, 1);
+    border-radius: 5px;
+    box-shadow: 0 5px 45px rgba(0, 0, 0, 0.3);
+}
+
+.form {
+    position: relative;
+    margin: 9px 10px;
+    width: 80%;
+    height: 5%;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 2px solid rgb(22, 35, 55);
+    -webkit-text-fill-color: rgba(0, 0, 0, 0.55);
+    text-indent: 2%;
+}
+
+.login {
+    margin-top: 18px;
+}
+
+.avatar+label {
+    margin: 9px 10px;
+    display: inline-block;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: sans-serif;
+    background-color: rgb(22, 35, 55);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.submit {
+    margin-bottom: 18px;
+    padding: 20px 0;
+    line-height: 30%;
+    -webkit-text-fill-color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    font-family: sans-serif;
+    background-color: rgb(22, 35, 55);
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 5px;
+}
+
+.half_button {
+    margin-bottom: 5px;
+    padding: 10px 0;
+    line-height: 30%;
+    -webkit-text-fill-color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    font-family: sans-serif;
+    background-color: rgb(22, 35, 55);
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 5px;
+}
+
+.logo_login {
+    margin-top: 16px;
+    margin-bottom: 9px;
+    padding: 20px 0;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 5px;
+    background-color: rgba(28, 45, 71, 1);
+    border-radius: 5px;
+    box-shadow: 0 5px 45px rgba(0, 0, 0, 0.3);
+}
+
+.logo_login_href {
+    text-decoration: none;
+    color: #2f81f7;
+}
