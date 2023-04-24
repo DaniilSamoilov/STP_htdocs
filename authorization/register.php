@@ -46,7 +46,7 @@ session_start();
     </div>
     <p class="logo_login text_center">
         Уже есть аккаунт?
-        <a class="logo_login_href" href="#">Войти</a>
+        <a class="logo_login_href" href="index.php">Войти</a>
     </p>
     <?php
       //cообщение берется из файла php/register.php в случае совпадения данных, с уже имеющимися в БД

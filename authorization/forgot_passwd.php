@@ -19,7 +19,7 @@ session_start();
     <div class="container_body">
       <h1 class="logo_text text_center">Востановление пароля</h1>
       <div class="div_form text_center">
-          <form action="scripts/check_authorization.php"  method="post">
+          <form action="scripts/forgot_passwd.php"  method="post">
               <div >
               <input class="form email" type="email" name="email" placeholder="Почта"><br>
               </div>

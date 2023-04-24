@@ -34,13 +34,18 @@ if ($mysql->query($sql)->num_rows) {
     header('Location: ../register.php');
     exit();
 }
-
-$sql = "SELECT 1 FROM `users` WHERE `email` = '$email'";
-if ($mysql->query($sql)->num_rows) {
-    $_SESSION['message'] = "Данная почта уже используется";
-    header('Location: ../register.php');
-    exit();
+if (!empty($_POST['email'])) {
+    $sql = "SELECT 1 FROM `users` WHERE `email` = '$email'";
+    if ($mysql->query($sql)->num_rows) {
+        $_SESSION['message'] = "Данная почта уже используется";
+        header('Location: ../register.php');
+        exit();
+    }
 }
+else {
+    $email = '';
+}
+
 
 $sql = "INSERT INTO `users` (`id`, `login`, `password`, `nick_name`, `email`, `avatar`, `score`)
 VALUES (NULL, '$login', '$passwd', '$nick_name', '$email', '$avatar', '0')";
